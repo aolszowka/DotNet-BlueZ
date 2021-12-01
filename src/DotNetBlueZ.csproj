@@ -1,26 +1,26 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <RootNamespace>ProrepubliQ.DotNetBlueZ</RootNamespace>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <RootNamespace>ProrepubliQ.DotNetBlueZ</RootNamespace>
+    </PropertyGroup>
 
-  <!-- NuGet -->
-  <PropertyGroup>
-    <PackageId>ProrepubliQ.DotNetBlueZ</PackageId>
-    <Version>1.3.1</Version>
-    <Authors>Chris Sidi</Authors>
-    <Title>Quick and dirty library for BlueZ's D-Bus APIs</Title>
-    <Description>A quick and dirty library for BlueZ's D-Bus APIs. Focus is on Bluetooth Low Energy APIs.</Description>
-    <PackageTags>BlueZ;net-core;netstandard;Bluetooth;BluetoothLowEnergy;BLE</PackageTags>
-    <RepositoryUrl>https://github.com/ProrepubliQ/DotNet-BlueZ</RepositoryUrl>
-    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-  </PropertyGroup>
+    <!-- NuGet -->
+    <PropertyGroup>
+        <PackageId>ProrepubliQ.DotNetBlueZ</PackageId>
+        <Version>1.3.1</Version>
+        <Authors>Chris Sidi</Authors>
+        <Title>Quick and dirty library for BlueZ's D-Bus APIs</Title>
+        <Description>A quick and dirty library for BlueZ's D-Bus APIs. Focus is on Bluetooth Low Energy APIs.</Description>
+        <PackageTags>BlueZ;net-core;netstandard;Bluetooth;BluetoothLowEnergy;BLE</PackageTags>
+        <RepositoryUrl>https://github.com/ProrepubliQ/DotNet-BlueZ</RepositoryUrl>
+        <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Tmds.DBus" Version="0.7.0" />
-    <DotNetCliToolReference Include="Tmds.DBus.Tool" Version="0.7.0" />
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Tmds.DBus" Version="0.7.0"/>
+        <DotNetCliToolReference Include="Tmds.DBus.Tool" Version="0.7.0"/>
+    </ItemGroup>
 
 </Project>

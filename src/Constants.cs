@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace ProrepubliQ.DotNetBlueZ
+﻿namespace ProrepubliQ.DotNetBlueZ
 {
     public static class BluezConstants
     {

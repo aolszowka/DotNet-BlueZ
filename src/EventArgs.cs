@@ -2,34 +2,34 @@ using System;
 
 namespace ProrepubliQ.DotNetBlueZ
 {
-  public class BlueZEventArgs : EventArgs
-  {
-    public BlueZEventArgs(bool isStateChange = true)
+    public class BlueZEventArgs : EventArgs
     {
-      IsStateChange = isStateChange;
+        public BlueZEventArgs(bool isStateChange = true)
+        {
+            IsStateChange = isStateChange;
+        }
+
+        public bool IsStateChange { get; }
     }
 
-    public bool IsStateChange { get; }
-  }
-
-  public class DeviceFoundEventArgs : BlueZEventArgs
-  {
-    public DeviceFoundEventArgs(Device device, bool isStateChange = true)
-      : base(isStateChange)
+    public class DeviceFoundEventArgs : BlueZEventArgs
     {
-      Device = device;
+        public DeviceFoundEventArgs(Device device, bool isStateChange = true)
+            : base(isStateChange)
+        {
+            Device = device;
+        }
+
+        public Device Device { get; }
     }
 
-    public Device Device { get; }
-  }
-
-  public class GattCharacteristicValueEventArgs : EventArgs
-  {
-    public GattCharacteristicValueEventArgs(byte[] value)
+    public class GattCharacteristicValueEventArgs : EventArgs
     {
-      Value = value;
-    }
+        public GattCharacteristicValueEventArgs(byte[] value)
+        {
+            Value = value;
+        }
 
-    public byte[] Value { get; }
-  }
+        public byte[] Value { get; }
+    }
 }

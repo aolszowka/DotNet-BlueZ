@@ -1,20 +1,17 @@
-﻿using System;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ProrepubliQ.DotNetBlueZ;
+﻿using ProrepubliQ.DotNetBlueZ;
 using ProrepubliQ.DotNetBlueZ.Extensions;
 
 namespace DotNetBlueZTest1
 {
-    class Program
+    internal class Program
     {
-        const string DefaultAdapterName = "hci0";
-        static TimeSpan timeout = TimeSpan.FromSeconds(15);
+        private const string DefaultAdapterName = "hci0";
+        private static readonly TimeSpan timeout = TimeSpan.FromSeconds(15);
 
-        static async Task Main(string[] args)
+        private static async Task Main(string[] args)
         {
-            if (args.Length < 1 || args.Length > 2 || args[0].ToLowerInvariant() == "-h" || !int.TryParse(args[0], out int scanSeconds))
+            if (args.Length < 1 || args.Length > 2 || args[0].ToLowerInvariant() == "-h" ||
+                !int.TryParse(args[0], out int scanSeconds))
             {
                 Console.WriteLine("Usage: DotNetBlueZTest1 <SecondsToScan> [adapterName]");
                 Console.WriteLine("Example: DotNetBlueZTest1 15 hci0");
@@ -27,7 +24,8 @@ namespace DotNetBlueZTest1
             // Scan briefly for devices.
             Console.WriteLine($"Scanning for {scanSeconds} seconds...");
 
-            using (await adapter.WatchDevicesAddedAsync(async device => {
+            using (await adapter.WatchDevicesAddedAsync(async device =>
+            {
                 // Write a message when we detect new devices during the scan.
                 string deviceDescription = await GetDeviceDescriptionAsync(device);
                 Console.WriteLine($"[NEW] {deviceDescription}");
@@ -41,28 +39,19 @@ namespace DotNetBlueZTest1
             var devices = await adapter.GetDevicesAsync();
             Console.WriteLine($"{devices.Count} device(s) found.");
 
-            foreach (var device in devices)
-            {
-                await OnDeviceFoundAsync(device);
-            }
+            foreach (var device in devices) await OnDeviceFoundAsync(device);
         }
 
-        static async Task OnDeviceFoundAsync(IDevice1 device)
+        private static async Task OnDeviceFoundAsync(IDevice1 device)
         {
             string deviceDescription = await GetDeviceDescriptionAsync(device);
             while (true)
             {
                 Console.WriteLine($"Connect to {deviceDescription}? yes/[no]?");
                 string response = Console.ReadLine();
-                if (response.Length == 0 || response.ToLowerInvariant().StartsWith("n"))
-                {
-                    return;
-                }
+                if (response.Length == 0 || response.ToLowerInvariant().StartsWith("n")) return;
 
-                if (response.ToLowerInvariant().StartsWith("y"))
-                {
-                    break;
-                }
+                if (response.ToLowerInvariant().StartsWith("y")) break;
             }
 
             try
@@ -78,7 +67,8 @@ namespace DotNetBlueZTest1
                 var servicesUUIDs = await device.GetUUIDsAsync();
                 Console.WriteLine($"Device offers {servicesUUIDs.Length} service(s).");
 
-                var deviceInfoServiceFound = servicesUUIDs.Any(uuid => uuid == GattConstants.DeviceInformationServiceUUID);
+                var deviceInfoServiceFound =
+                    servicesUUIDs.Any(uuid => uuid == GattConstants.DeviceInformationServiceUUID);
                 if (!deviceInfoServiceFound)
                 {
                     Console.WriteLine("Device doesn't have the Device Information Service. Try pairing first?");
@@ -87,8 +77,10 @@ namespace DotNetBlueZTest1
 
                 // Console.WriteLine("Retrieving Device Information service...");
                 var service = await device.GetServiceAsync(GattConstants.DeviceInformationServiceUUID);
-                var modelNameCharacteristic = await service.GetCharacteristicAsync(GattConstants.ModelNameCharacteristicUUID);
-                var manufacturerCharacteristic = await service.GetCharacteristicAsync(GattConstants.ManufacturerNameCharacteristicUUID);
+                var modelNameCharacteristic =
+                    await service.GetCharacteristicAsync(GattConstants.ModelNameCharacteristicUUID);
+                var manufacturerCharacteristic =
+                    await service.GetCharacteristicAsync(GattConstants.ManufacturerNameCharacteristicUUID);
 
                 Console.WriteLine("Reading Device Info characteristic values...");
                 var modelNameBytes = await modelNameCharacteristic.ReadValueAsync(timeout);
@@ -98,7 +90,9 @@ namespace DotNetBlueZTest1
                 Console.WriteLine($"Manufacturer: {Encoding.UTF8.GetString(manufacturerBytes)}");
 
                 // Test walking back up to the adapter...
-                var adapterName = await (await (await (await modelNameCharacteristic.GetServiceAsync()).GetDeviceAsync()).GetAdapterAsync()).GetAliasAsync();
+                var adapterName =
+                    await (await (await (await modelNameCharacteristic.GetServiceAsync()).GetDeviceAsync())
+                        .GetAdapterAsync()).GetAliasAsync();
 
                 Console.WriteLine($"Adapter name: {adapterName}");
             }

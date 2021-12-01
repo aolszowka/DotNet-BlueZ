@@ -1,18 +1,16 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using ProrepubliQ.DotNetBlueZ;
+﻿using ProrepubliQ.DotNetBlueZ;
 using ProrepubliQ.DotNetBlueZ.Extensions;
 
 namespace Scan
 {
-    class Program
+    internal class Program
     {
-        static TimeSpan timeout = TimeSpan.FromSeconds(15);
+        private static TimeSpan timeout = TimeSpan.FromSeconds(15);
 
-        static async Task Main(string[] args)
+        private static async Task Main(string[] args)
         {
-            if (args.Length < 1 || args.Length > 2 || args[0].ToLowerInvariant() == "-h" || !int.TryParse(args[0], out int scanSeconds))
+            if (args.Length < 1 || args.Length > 2 || args[0].ToLowerInvariant() == "-h" ||
+                !int.TryParse(args[0], out int scanSeconds))
             {
                 Console.WriteLine("Usage: scan <SecondsToScan> [adapterName]");
                 Console.WriteLine("Example: scan 15 hci0");
@@ -27,10 +25,7 @@ namespace Scan
             else
             {
                 var adapters = await BlueZManager.GetAdaptersAsync();
-                if (adapters.Count == 0)
-                {
-                    throw new Exception("No Bluetooth adapters found.");
-                }
+                if (adapters.Count == 0) throw new Exception("No Bluetooth adapters found.");
 
                 adapter = adapters.First();
             }
@@ -46,6 +41,7 @@ namespace Scan
                 string deviceDescription = await GetDeviceDescriptionAsync(device);
                 Console.WriteLine(deviceDescription);
             }
+
             Console.WriteLine($"{devices.Count} device(s) found ahead of scan.");
 
             Console.WriteLine();
@@ -54,7 +50,8 @@ namespace Scan
             Console.WriteLine($"Scanning for {scanSeconds} seconds...");
 
             int newDevices = 0;
-            using (await adapter.WatchDevicesAddedAsync(async device => {
+            using (await adapter.WatchDevicesAddedAsync(async device =>
+            {
                 newDevices++;
                 // Write a message when we detect new devices during the scan.
                 string deviceDescription = await GetDeviceDescriptionAsync(device);
@@ -65,6 +62,7 @@ namespace Scan
                 await Task.Delay(TimeSpan.FromSeconds(scanSeconds));
                 await adapter.StopDiscoveryAsync();
             }
+
             Console.WriteLine($"Scan complete. {newDevices} new device(s) found.");
         }
 

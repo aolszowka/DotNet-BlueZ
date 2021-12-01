@@ -2,21 +2,28 @@
 // Bluetoothctl was used to connect to a Bluetooth Low Energy device, then `dotnet dbus codegen --bus system --service org.bluez` was executed.
 // After code generation, some `ObjectPath`s were manually replaced with the right interface types.
 // For more context, see https://developers.redhat.com/blog/2017/09/18/connecting-net-core-d-bus/ or https://github.com/tmds/Tmds.DBus
+
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Tmds.DBus;
 
-[assembly: InternalsVisibleTo(Tmds.DBus.Connection.DynamicAssemblyName)]
+[assembly: InternalsVisibleTo(Connection.DynamicAssemblyName)]
+
 namespace ProrepubliQ.DotNetBlueZ
 {
     [DBusInterface("org.freedesktop.DBus.ObjectManager")]
     public interface IObjectManager : IDBusObject
     {
         Task<IDictionary<ObjectPath, IDictionary<string, IDictionary<string, object>>>> GetManagedObjectsAsync();
-        Task<IDisposable> WatchInterfacesAddedAsync(Action<(ObjectPath @object, IDictionary<string, IDictionary<string, object>> interfaces)> handler, Action<Exception> onError = null);
-        Task<IDisposable> WatchInterfacesRemovedAsync(Action<(ObjectPath @object, string[] interfaces)> handler, Action<Exception> onError = null);
+
+        Task<IDisposable> WatchInterfacesAddedAsync(
+            Action<(ObjectPath @object, IDictionary<string, IDictionary<string, object>> interfaces)> handler,
+            Action<Exception> onError = null);
+
+        Task<IDisposable> WatchInterfacesRemovedAsync(Action<(ObjectPath @object, string[] interfaces)> handler,
+            Action<Exception> onError = null);
     }
 
     [DBusInterface("org.bluez.AgentManager1")]
@@ -51,210 +58,129 @@ namespace ProrepubliQ.DotNetBlueZ
     [Dictionary]
     public class Adapter1Properties
     {
-        private string _Address = default (string);
-        public string Address
-        {
-            get
-            {
-                return _Address;
-            }
+        public string Address { get; set; } = default;
 
-            set
-            {
-                _Address = (value);
-            }
-        }
+        public string AddressType { get; set; } = default;
 
-        private string _AddressType = default (string);
-        public string AddressType
-        {
-            get
-            {
-                return _AddressType;
-            }
+        public string Name { get; set; } = default;
 
-            set
-            {
-                _AddressType = (value);
-            }
-        }
+        public string Alias { get; set; } = default;
 
-        private string _Name = default (string);
-        public string Name
-        {
-            get
-            {
-                return _Name;
-            }
+        public uint Class { get; set; } = default;
 
-            set
-            {
-                _Name = (value);
-            }
-        }
+        public bool Powered { get; set; } = default;
 
-        private string _Alias = default (string);
-        public string Alias
-        {
-            get
-            {
-                return _Alias;
-            }
+        public bool Discoverable { get; set; } = default;
 
-            set
-            {
-                _Alias = (value);
-            }
-        }
+        public uint DiscoverableTimeout { get; set; } = default;
 
-        private uint _Class = default (uint);
-        public uint Class
-        {
-            get
-            {
-                return _Class;
-            }
+        public bool Pairable { get; set; } = default;
 
-            set
-            {
-                _Class = (value);
-            }
-        }
+        public uint PairableTimeout { get; set; } = default;
 
-        private bool _Powered = default (bool);
-        public bool Powered
-        {
-            get
-            {
-                return _Powered;
-            }
+        public bool Discovering { get; set; } = default;
 
-            set
-            {
-                _Powered = (value);
-            }
-        }
+        public string[] UUIDs { get; set; } = default;
 
-        private bool _Discoverable = default (bool);
-        public bool Discoverable
-        {
-            get
-            {
-                return _Discoverable;
-            }
-
-            set
-            {
-                _Discoverable = (value);
-            }
-        }
-
-        private uint _DiscoverableTimeout = default (uint);
-        public uint DiscoverableTimeout
-        {
-            get
-            {
-                return _DiscoverableTimeout;
-            }
-
-            set
-            {
-                _DiscoverableTimeout = (value);
-            }
-        }
-
-        private bool _Pairable = default (bool);
-        public bool Pairable
-        {
-            get
-            {
-                return _Pairable;
-            }
-
-            set
-            {
-                _Pairable = (value);
-            }
-        }
-
-        private uint _PairableTimeout = default (uint);
-        public uint PairableTimeout
-        {
-            get
-            {
-                return _PairableTimeout;
-            }
-
-            set
-            {
-                _PairableTimeout = (value);
-            }
-        }
-
-        private bool _Discovering = default (bool);
-        public bool Discovering
-        {
-            get
-            {
-                return _Discovering;
-            }
-
-            set
-            {
-                _Discovering = (value);
-            }
-        }
-
-        private string[] _UUIDs = default (string[]);
-        public string[] UUIDs
-        {
-            get
-            {
-                return _UUIDs;
-            }
-
-            set
-            {
-                _UUIDs = (value);
-            }
-        }
-
-        private string _Modalias = default (string);
-        public string Modalias
-        {
-            get
-            {
-                return _Modalias;
-            }
-
-            set
-            {
-                _Modalias = (value);
-            }
-        }
+        public string Modalias { get; set; } = default;
     }
 
     public static class Adapter1Extensions
     {
-        public static Task<string> GetAddressAsync(this IAdapter1 o) => o.GetAsync<string>("Address");
-        public static Task<string> GetAddressTypeAsync(this IAdapter1 o) => o.GetAsync<string>("AddressType");
-        public static Task<string> GetNameAsync(this IAdapter1 o) => o.GetAsync<string>("Name");
-        public static Task<string> GetAliasAsync(this IAdapter1 o) => o.GetAsync<string>("Alias");
-        public static Task<uint> GetClassAsync(this IAdapter1 o) => o.GetAsync<uint>("Class");
-        public static Task<bool> GetPoweredAsync(this IAdapter1 o) => o.GetAsync<bool>("Powered");
-        public static Task<bool> GetDiscoverableAsync(this IAdapter1 o) => o.GetAsync<bool>("Discoverable");
-        public static Task<uint> GetDiscoverableTimeoutAsync(this IAdapter1 o) => o.GetAsync<uint>("DiscoverableTimeout");
-        public static Task<bool> GetPairableAsync(this IAdapter1 o) => o.GetAsync<bool>("Pairable");
-        public static Task<uint> GetPairableTimeoutAsync(this IAdapter1 o) => o.GetAsync<uint>("PairableTimeout");
-        public static Task<bool> GetDiscoveringAsync(this IAdapter1 o) => o.GetAsync<bool>("Discovering");
-        public static Task<string[]> GetUUIDsAsync(this IAdapter1 o) => o.GetAsync<string[]>("UUIDs");
-        public static Task<string> GetModaliasAsync(this IAdapter1 o) => o.GetAsync<string>("Modalias");
-        public static Task SetAliasAsync(this IAdapter1 o, string val) => o.SetAsync("Alias", val);
-        public static Task SetPoweredAsync(this IAdapter1 o, bool val) => o.SetAsync("Powered", val);
-        public static Task SetDiscoverableAsync(this IAdapter1 o, bool val) => o.SetAsync("Discoverable", val);
-        public static Task SetDiscoverableTimeoutAsync(this IAdapter1 o, uint val) => o.SetAsync("DiscoverableTimeout", val);
-        public static Task SetPairableAsync(this IAdapter1 o, bool val) => o.SetAsync("Pairable", val);
-        public static Task SetPairableTimeoutAsync(this IAdapter1 o, uint val) => o.SetAsync("PairableTimeout", val);
+        public static Task<string> GetAddressAsync(this IAdapter1 o)
+        {
+            return o.GetAsync<string>("Address");
+        }
+
+        public static Task<string> GetAddressTypeAsync(this IAdapter1 o)
+        {
+            return o.GetAsync<string>("AddressType");
+        }
+
+        public static Task<string> GetNameAsync(this IAdapter1 o)
+        {
+            return o.GetAsync<string>("Name");
+        }
+
+        public static Task<string> GetAliasAsync(this IAdapter1 o)
+        {
+            return o.GetAsync<string>("Alias");
+        }
+
+        public static Task<uint> GetClassAsync(this IAdapter1 o)
+        {
+            return o.GetAsync<uint>("Class");
+        }
+
+        public static Task<bool> GetPoweredAsync(this IAdapter1 o)
+        {
+            return o.GetAsync<bool>("Powered");
+        }
+
+        public static Task<bool> GetDiscoverableAsync(this IAdapter1 o)
+        {
+            return o.GetAsync<bool>("Discoverable");
+        }
+
+        public static Task<uint> GetDiscoverableTimeoutAsync(this IAdapter1 o)
+        {
+            return o.GetAsync<uint>("DiscoverableTimeout");
+        }
+
+        public static Task<bool> GetPairableAsync(this IAdapter1 o)
+        {
+            return o.GetAsync<bool>("Pairable");
+        }
+
+        public static Task<uint> GetPairableTimeoutAsync(this IAdapter1 o)
+        {
+            return o.GetAsync<uint>("PairableTimeout");
+        }
+
+        public static Task<bool> GetDiscoveringAsync(this IAdapter1 o)
+        {
+            return o.GetAsync<bool>("Discovering");
+        }
+
+        public static Task<string[]> GetUUIDsAsync(this IAdapter1 o)
+        {
+            return o.GetAsync<string[]>("UUIDs");
+        }
+
+        public static Task<string> GetModaliasAsync(this IAdapter1 o)
+        {
+            return o.GetAsync<string>("Modalias");
+        }
+
+        public static Task SetAliasAsync(this IAdapter1 o, string val)
+        {
+            return o.SetAsync("Alias", val);
+        }
+
+        public static Task SetPoweredAsync(this IAdapter1 o, bool val)
+        {
+            return o.SetAsync("Powered", val);
+        }
+
+        public static Task SetDiscoverableAsync(this IAdapter1 o, bool val)
+        {
+            return o.SetAsync("Discoverable", val);
+        }
+
+        public static Task SetDiscoverableTimeoutAsync(this IAdapter1 o, uint val)
+        {
+            return o.SetAsync("DiscoverableTimeout", val);
+        }
+
+        public static Task SetPairableAsync(this IAdapter1 o, bool val)
+        {
+            return o.SetAsync("Pairable", val);
+        }
+
+        public static Task SetPairableTimeoutAsync(this IAdapter1 o, uint val)
+        {
+            return o.SetAsync("PairableTimeout", val);
+        }
     }
 
     [DBusInterface("org.bluez.GattManager1")]
@@ -278,54 +204,29 @@ namespace ProrepubliQ.DotNetBlueZ
     [Dictionary]
     public class LEAdvertisingManager1Properties
     {
-        private byte _ActiveInstances = default (byte);
-        public byte ActiveInstances
-        {
-            get
-            {
-                return _ActiveInstances;
-            }
+        public byte ActiveInstances { get; set; } = default;
 
-            set
-            {
-                _ActiveInstances = (value);
-            }
-        }
+        public byte SupportedInstances { get; set; } = default;
 
-        private byte _SupportedInstances = default (byte);
-        public byte SupportedInstances
-        {
-            get
-            {
-                return _SupportedInstances;
-            }
-
-            set
-            {
-                _SupportedInstances = (value);
-            }
-        }
-
-        private string[] _SupportedIncludes = default (string[]);
-        public string[] SupportedIncludes
-        {
-            get
-            {
-                return _SupportedIncludes;
-            }
-
-            set
-            {
-                _SupportedIncludes = (value);
-            }
-        }
+        public string[] SupportedIncludes { get; set; } = default;
     }
 
     public static class LEAdvertisingManager1Extensions
     {
-        public static Task<byte> GetActiveInstancesAsync(this ILEAdvertisingManager1 o) => o.GetAsync<byte>("ActiveInstances");
-        public static Task<byte> GetSupportedInstancesAsync(this ILEAdvertisingManager1 o) => o.GetAsync<byte>("SupportedInstances");
-        public static Task<string[]> GetSupportedIncludesAsync(this ILEAdvertisingManager1 o) => o.GetAsync<string[]>("SupportedIncludes");
+        public static Task<byte> GetActiveInstancesAsync(this ILEAdvertisingManager1 o)
+        {
+            return o.GetAsync<byte>("ActiveInstances");
+        }
+
+        public static Task<byte> GetSupportedInstancesAsync(this ILEAdvertisingManager1 o)
+        {
+            return o.GetAsync<byte>("SupportedInstances");
+        }
+
+        public static Task<string[]> GetSupportedIncludesAsync(this ILEAdvertisingManager1 o)
+        {
+            return o.GetAsync<string[]>("SupportedIncludes");
+        }
     }
 
     [DBusInterface("org.bluez.Media1")]
@@ -362,312 +263,163 @@ namespace ProrepubliQ.DotNetBlueZ
     [Dictionary]
     public class Device1Properties
     {
-        private string _Address = default (string);
-        public string Address
-        {
-            get
-            {
-                return _Address;
-            }
+        public string Address { get; set; } = default;
 
-            set
-            {
-                _Address = (value);
-            }
-        }
+        public string AddressType { get; set; } = default;
 
-        private string _AddressType = default (string);
-        public string AddressType
-        {
-            get
-            {
-                return _AddressType;
-            }
+        public string Name { get; set; } = default;
 
-            set
-            {
-                _AddressType = (value);
-            }
-        }
+        public string Alias { get; set; } = default;
 
-        private string _Name = default (string);
-        public string Name
-        {
-            get
-            {
-                return _Name;
-            }
+        public uint Class { get; set; } = default;
 
-            set
-            {
-                _Name = (value);
-            }
-        }
+        public ushort Appearance { get; set; } = default;
 
-        private string _Alias = default (string);
-        public string Alias
-        {
-            get
-            {
-                return _Alias;
-            }
+        public string Icon { get; set; } = default;
 
-            set
-            {
-                _Alias = (value);
-            }
-        }
+        public bool Paired { get; set; } = default;
 
-        private uint _Class = default (uint);
-        public uint Class
-        {
-            get
-            {
-                return _Class;
-            }
+        public bool Trusted { get; set; } = default;
 
-            set
-            {
-                _Class = (value);
-            }
-        }
+        public bool Blocked { get; set; } = default;
 
-        private ushort _Appearance = default (ushort);
-        public ushort Appearance
-        {
-            get
-            {
-                return _Appearance;
-            }
+        public bool LegacyPairing { get; set; } = default;
 
-            set
-            {
-                _Appearance = (value);
-            }
-        }
+        public short RSSI { get; set; } = default;
 
-        private string _Icon = default (string);
-        public string Icon
-        {
-            get
-            {
-                return _Icon;
-            }
+        public bool Connected { get; set; } = default;
 
-            set
-            {
-                _Icon = (value);
-            }
-        }
+        public string[] UUIDs { get; set; } = default;
 
-        private bool _Paired = default (bool);
-        public bool Paired
-        {
-            get
-            {
-                return _Paired;
-            }
+        public string Modalias { get; set; } = default;
 
-            set
-            {
-                _Paired = (value);
-            }
-        }
+        public ObjectPath Adapter { get; set; } = default;
 
-        private bool _Trusted = default (bool);
-        public bool Trusted
-        {
-            get
-            {
-                return _Trusted;
-            }
+        public IDictionary<ushort, object> ManufacturerData { get; set; } = default;
 
-            set
-            {
-                _Trusted = (value);
-            }
-        }
+        public IDictionary<string, object> ServiceData { get; set; } = default;
 
-        private bool _Blocked = default (bool);
-        public bool Blocked
-        {
-            get
-            {
-                return _Blocked;
-            }
+        public short TxPower { get; set; } = default;
 
-            set
-            {
-                _Blocked = (value);
-            }
-        }
-
-        private bool _LegacyPairing = default (bool);
-        public bool LegacyPairing
-        {
-            get
-            {
-                return _LegacyPairing;
-            }
-
-            set
-            {
-                _LegacyPairing = (value);
-            }
-        }
-
-        private short _RSSI = default (short);
-        public short RSSI
-        {
-            get
-            {
-                return _RSSI;
-            }
-
-            set
-            {
-                _RSSI = (value);
-            }
-        }
-
-        private bool _Connected = default (bool);
-        public bool Connected
-        {
-            get
-            {
-                return _Connected;
-            }
-
-            set
-            {
-                _Connected = (value);
-            }
-        }
-
-        private string[] _UUIDs = default (string[]);
-        public string[] UUIDs
-        {
-            get
-            {
-                return _UUIDs;
-            }
-
-            set
-            {
-                _UUIDs = (value);
-            }
-        }
-
-        private string _Modalias = default (string);
-        public string Modalias
-        {
-            get
-            {
-                return _Modalias;
-            }
-
-            set
-            {
-                _Modalias = (value);
-            }
-        }
-
-        private ObjectPath _Adapter = default (ObjectPath);
-        public ObjectPath Adapter
-        {
-            get
-            {
-                return _Adapter;
-            }
-
-            set
-            {
-                _Adapter = (value);
-            }
-        }
-
-        private IDictionary<ushort, object> _ManufacturerData = default (IDictionary<ushort, object>);
-        public IDictionary<ushort, object> ManufacturerData
-        {
-            get
-            {
-                return _ManufacturerData;
-            }
-
-            set
-            {
-                _ManufacturerData = (value);
-            }
-        }
-
-        private IDictionary<string, object> _ServiceData = default (IDictionary<string, object>);
-        public IDictionary<string, object> ServiceData
-        {
-            get
-            {
-                return _ServiceData;
-            }
-
-            set
-            {
-                _ServiceData = (value);
-            }
-        }
-
-        private short _TxPower = default (short);
-        public short TxPower
-        {
-            get
-            {
-                return _TxPower;
-            }
-
-            set
-            {
-                _TxPower = (value);
-            }
-        }
-
-        private bool _ServicesResolved = default (bool);
-        public bool ServicesResolved
-        {
-            get
-            {
-                return _ServicesResolved;
-            }
-
-            set
-            {
-                _ServicesResolved = (value);
-            }
-        }
+        public bool ServicesResolved { get; set; } = default;
     }
 
     public static class Device1Extensions
     {
-        public static Task<string> GetAddressAsync(this IDevice1 o) => o.GetAsync<string>("Address");
-        public static Task<string> GetAddressTypeAsync(this IDevice1 o) => o.GetAsync<string>("AddressType");
-        public static Task<string> GetNameAsync(this IDevice1 o) => o.GetAsync<string>("Name");
-        public static Task<string> GetAliasAsync(this IDevice1 o) => o.GetAsync<string>("Alias");
-        public static Task<uint> GetClassAsync(this IDevice1 o) => o.GetAsync<uint>("Class");
-        public static Task<ushort> GetAppearanceAsync(this IDevice1 o) => o.GetAsync<ushort>("Appearance");
-        public static Task<string> GetIconAsync(this IDevice1 o) => o.GetAsync<string>("Icon");
-        public static Task<bool> GetPairedAsync(this IDevice1 o) => o.GetAsync<bool>("Paired");
-        public static Task<bool> GetTrustedAsync(this IDevice1 o) => o.GetAsync<bool>("Trusted");
-        public static Task<bool> GetBlockedAsync(this IDevice1 o) => o.GetAsync<bool>("Blocked");
-        public static Task<bool> GetLegacyPairingAsync(this IDevice1 o) => o.GetAsync<bool>("LegacyPairing");
-        public static Task<short> GetRSSIAsync(this IDevice1 o) => o.GetAsync<short>("RSSI");
-        public static Task<bool> GetConnectedAsync(this IDevice1 o) => o.GetAsync<bool>("Connected");
-        public static Task<string[]> GetUUIDsAsync(this IDevice1 o) => o.GetAsync<string[]>("UUIDs");
-        public static Task<string> GetModaliasAsync(this IDevice1 o) => o.GetAsync<string>("Modalias");
-        public static Task<IAdapter1> GetAdapterAsync(this IDevice1 o) => o.GetAsync<IAdapter1>("Adapter");
-        public static Task<IDictionary<ushort, object>> GetManufacturerDataAsync(this IDevice1 o) => o.GetAsync<IDictionary<ushort, object>>("ManufacturerData");
-        public static Task<IDictionary<string, object>> GetServiceDataAsync(this IDevice1 o) => o.GetAsync<IDictionary<string, object>>("ServiceData");
-        public static Task<short> GetTxPowerAsync(this IDevice1 o) => o.GetAsync<short>("TxPower");
-        public static Task<bool> GetServicesResolvedAsync(this IDevice1 o) => o.GetAsync<bool>("ServicesResolved");
-        public static Task SetAliasAsync(this IDevice1 o, string val) => o.SetAsync("Alias", val);
-        public static Task SetTrustedAsync(this IDevice1 o, bool val) => o.SetAsync("Trusted", val);
-        public static Task SetBlockedAsync(this IDevice1 o, bool val) => o.SetAsync("Blocked", val);
+        public static Task<string> GetAddressAsync(this IDevice1 o)
+        {
+            return o.GetAsync<string>("Address");
+        }
+
+        public static Task<string> GetAddressTypeAsync(this IDevice1 o)
+        {
+            return o.GetAsync<string>("AddressType");
+        }
+
+        public static Task<string> GetNameAsync(this IDevice1 o)
+        {
+            return o.GetAsync<string>("Name");
+        }
+
+        public static Task<string> GetAliasAsync(this IDevice1 o)
+        {
+            return o.GetAsync<string>("Alias");
+        }
+
+        public static Task<uint> GetClassAsync(this IDevice1 o)
+        {
+            return o.GetAsync<uint>("Class");
+        }
+
+        public static Task<ushort> GetAppearanceAsync(this IDevice1 o)
+        {
+            return o.GetAsync<ushort>("Appearance");
+        }
+
+        public static Task<string> GetIconAsync(this IDevice1 o)
+        {
+            return o.GetAsync<string>("Icon");
+        }
+
+        public static Task<bool> GetPairedAsync(this IDevice1 o)
+        {
+            return o.GetAsync<bool>("Paired");
+        }
+
+        public static Task<bool> GetTrustedAsync(this IDevice1 o)
+        {
+            return o.GetAsync<bool>("Trusted");
+        }
+
+        public static Task<bool> GetBlockedAsync(this IDevice1 o)
+        {
+            return o.GetAsync<bool>("Blocked");
+        }
+
+        public static Task<bool> GetLegacyPairingAsync(this IDevice1 o)
+        {
+            return o.GetAsync<bool>("LegacyPairing");
+        }
+
+        public static Task<short> GetRSSIAsync(this IDevice1 o)
+        {
+            return o.GetAsync<short>("RSSI");
+        }
+
+        public static Task<bool> GetConnectedAsync(this IDevice1 o)
+        {
+            return o.GetAsync<bool>("Connected");
+        }
+
+        public static Task<string[]> GetUUIDsAsync(this IDevice1 o)
+        {
+            return o.GetAsync<string[]>("UUIDs");
+        }
+
+        public static Task<string> GetModaliasAsync(this IDevice1 o)
+        {
+            return o.GetAsync<string>("Modalias");
+        }
+
+        public static Task<IAdapter1> GetAdapterAsync(this IDevice1 o)
+        {
+            return o.GetAsync<IAdapter1>("Adapter");
+        }
+
+        public static Task<IDictionary<ushort, object>> GetManufacturerDataAsync(this IDevice1 o)
+        {
+            return o.GetAsync<IDictionary<ushort, object>>("ManufacturerData");
+        }
+
+        public static Task<IDictionary<string, object>> GetServiceDataAsync(this IDevice1 o)
+        {
+            return o.GetAsync<IDictionary<string, object>>("ServiceData");
+        }
+
+        public static Task<short> GetTxPowerAsync(this IDevice1 o)
+        {
+            return o.GetAsync<short>("TxPower");
+        }
+
+        public static Task<bool> GetServicesResolvedAsync(this IDevice1 o)
+        {
+            return o.GetAsync<bool>("ServicesResolved");
+        }
+
+        public static Task SetAliasAsync(this IDevice1 o, string val)
+        {
+            return o.SetAsync("Alias", val);
+        }
+
+        public static Task SetTrustedAsync(this IDevice1 o, bool val)
+        {
+            return o.SetAsync("Trusted", val);
+        }
+
+        public static Task SetBlockedAsync(this IDevice1 o, bool val)
+        {
+            return o.SetAsync("Blocked", val);
+        }
     }
 
     [DBusInterface("org.bluez.Battery1")]
@@ -682,24 +434,15 @@ namespace ProrepubliQ.DotNetBlueZ
     [Dictionary]
     public class Battery1Properties
     {
-        private byte _Percentage = default (byte);
-        public byte Percentage
-        {
-            get
-            {
-                return _Percentage;
-            }
-
-            set
-            {
-                _Percentage = (value);
-            }
-        }
+        public byte Percentage { get; set; } = default;
     }
 
     public static class Battery1Extensions
     {
-        public static Task<byte> GetPercentageAsync(this IBattery1 o) => o.GetAsync<byte>("Percentage");
+        public static Task<byte> GetPercentageAsync(this IBattery1 o)
+        {
+            return o.GetAsync<byte>("Percentage");
+        }
     }
 
     [DBusInterface("org.bluez.GattService1")]
@@ -714,69 +457,36 @@ namespace ProrepubliQ.DotNetBlueZ
     [Dictionary]
     public class GattService1Properties
     {
-        private string _UUID = default (string);
-        public string UUID
-        {
-            get
-            {
-                return _UUID;
-            }
+        public string UUID { get; set; } = default;
 
-            set
-            {
-                _UUID = (value);
-            }
-        }
+        public ObjectPath Device { get; set; } = default;
 
-        private ObjectPath _Device = default (ObjectPath);
-        public ObjectPath Device
-        {
-            get
-            {
-                return _Device;
-            }
+        public bool Primary { get; set; } = default;
 
-            set
-            {
-                _Device = (value);
-            }
-        }
-
-        private bool _Primary = default (bool);
-        public bool Primary
-        {
-            get
-            {
-                return _Primary;
-            }
-
-            set
-            {
-                _Primary = (value);
-            }
-        }
-
-        private ObjectPath[] _Includes = default (ObjectPath[]);
-        public ObjectPath[] Includes
-        {
-            get
-            {
-                return _Includes;
-            }
-
-            set
-            {
-                _Includes = (value);
-            }
-        }
+        public ObjectPath[] Includes { get; set; } = default;
     }
 
     public static class GattService1Extensions
     {
-        public static Task<string> GetUUIDAsync(this IGattService1 o) => o.GetAsync<string>("UUID");
-        public static Task<IDevice1> GetDeviceAsync(this IGattService1 o) => o.GetAsync<IDevice1>("Device");
-        public static Task<bool> GetPrimaryAsync(this IGattService1 o) => o.GetAsync<bool>("Primary");
-        public static Task<ObjectPath[]> GetIncludesAsync(this IGattService1 o) => o.GetAsync<ObjectPath[]>("Includes");
+        public static Task<string> GetUUIDAsync(this IGattService1 o)
+        {
+            return o.GetAsync<string>("UUID");
+        }
+
+        public static Task<IDevice1> GetDeviceAsync(this IGattService1 o)
+        {
+            return o.GetAsync<IDevice1>("Device");
+        }
+
+        public static Task<bool> GetPrimaryAsync(this IGattService1 o)
+        {
+            return o.GetAsync<bool>("Primary");
+        }
+
+        public static Task<ObjectPath[]> GetIncludesAsync(this IGattService1 o)
+        {
+            return o.GetAsync<ObjectPath[]>("Includes");
+        }
     }
 
     [DBusInterface("org.bluez.GattCharacteristic1")]
@@ -797,114 +507,57 @@ namespace ProrepubliQ.DotNetBlueZ
     [Dictionary]
     public class GattCharacteristic1Properties
     {
-        private string _UUID = default (string);
-        public string UUID
-        {
-            get
-            {
-                return _UUID;
-            }
+        public string UUID { get; set; } = default;
 
-            set
-            {
-                _UUID = (value);
-            }
-        }
+        public ObjectPath Service { get; set; } = default;
 
-        private ObjectPath _Service = default (ObjectPath);
-        public ObjectPath Service
-        {
-            get
-            {
-                return _Service;
-            }
+        public byte[] Value { get; set; } = default;
 
-            set
-            {
-                _Service = (value);
-            }
-        }
+        public bool Notifying { get; set; } = default;
 
-        private byte[] _Value = default (byte[]);
-        public byte[] Value
-        {
-            get
-            {
-                return _Value;
-            }
+        public string[] Flags { get; set; } = default;
 
-            set
-            {
-                _Value = (value);
-            }
-        }
+        public bool WriteAcquired { get; set; } = default;
 
-        private bool _Notifying = default (bool);
-        public bool Notifying
-        {
-            get
-            {
-                return _Notifying;
-            }
-
-            set
-            {
-                _Notifying = (value);
-            }
-        }
-
-        private string[] _Flags = default (string[]);
-        public string[] Flags
-        {
-            get
-            {
-                return _Flags;
-            }
-
-            set
-            {
-                _Flags = (value);
-            }
-        }
-
-        private bool _WriteAcquired = default (bool);
-        public bool WriteAcquired
-        {
-            get
-            {
-                return _WriteAcquired;
-            }
-
-            set
-            {
-                _WriteAcquired = (value);
-            }
-        }
-
-        private bool _NotifyAcquired = default (bool);
-        public bool NotifyAcquired
-        {
-            get
-            {
-                return _NotifyAcquired;
-            }
-
-            set
-            {
-                _NotifyAcquired = (value);
-            }
-        }
+        public bool NotifyAcquired { get; set; } = default;
     }
 
     public static class GattCharacteristic1Extensions
     {
-        public static Task<string> GetUUIDAsync(this IGattCharacteristic1 o) => o.GetAsync<string>("UUID");
-        public static Task<IGattService1> GetServiceAsync(this IGattCharacteristic1 o) => o.GetAsync<IGattService1>("Service");
-        public static Task<byte[]> GetValueAsync(this IGattCharacteristic1 o) => o.GetAsync<byte[]>("Value");
-        public static Task<bool> GetNotifyingAsync(this IGattCharacteristic1 o) => o.GetAsync<bool>("Notifying");
-        public static Task<string[]> GetFlagsAsync(this IGattCharacteristic1 o) => o.GetAsync<string[]>("Flags");
-        public static Task<bool> GetWriteAcquiredAsync(this IGattCharacteristic1 o) => o.GetAsync<bool>("WriteAcquired");
-        public static Task<bool> GetNotifyAcquiredAsync(this IGattCharacteristic1 o) => o.GetAsync<bool>("NotifyAcquired");
+        public static Task<string> GetUUIDAsync(this IGattCharacteristic1 o)
+        {
+            return o.GetAsync<string>("UUID");
+        }
+
+        public static Task<IGattService1> GetServiceAsync(this IGattCharacteristic1 o)
+        {
+            return o.GetAsync<IGattService1>("Service");
+        }
+
+        public static Task<byte[]> GetValueAsync(this IGattCharacteristic1 o)
+        {
+            return o.GetAsync<byte[]>("Value");
+        }
+
+        public static Task<bool> GetNotifyingAsync(this IGattCharacteristic1 o)
+        {
+            return o.GetAsync<bool>("Notifying");
+        }
+
+        public static Task<string[]> GetFlagsAsync(this IGattCharacteristic1 o)
+        {
+            return o.GetAsync<string[]>("Flags");
+        }
+
+        public static Task<bool> GetWriteAcquiredAsync(this IGattCharacteristic1 o)
+        {
+            return o.GetAsync<bool>("WriteAcquired");
+        }
+
+        public static Task<bool> GetNotifyAcquiredAsync(this IGattCharacteristic1 o)
+        {
+            return o.GetAsync<bool>("NotifyAcquired");
+        }
     }
 
     [DBusInterface("org.bluez.GattDescriptor1")]
@@ -921,54 +574,29 @@ namespace ProrepubliQ.DotNetBlueZ
     [Dictionary]
     public class GattDescriptor1Properties
     {
-        private string _UUID = default (string);
-        public string UUID
-        {
-            get
-            {
-                return _UUID;
-            }
+        public string UUID { get; set; } = default;
 
-            set
-            {
-                _UUID = (value);
-            }
-        }
+        public ObjectPath Characteristic { get; set; } = default;
 
-        private ObjectPath _Characteristic = default (ObjectPath);
-        public ObjectPath Characteristic
-        {
-            get
-            {
-                return _Characteristic;
-            }
-
-            set
-            {
-                _Characteristic = (value);
-            }
-        }
-
-        private byte[] _Value = default (byte[]);
-        public byte[] Value
-        {
-            get
-            {
-                return _Value;
-            }
-
-            set
-            {
-                _Value = (value);
-            }
-        }
+        public byte[] Value { get; set; } = default;
     }
 
     public static class GattDescriptor1Extensions
     {
-        public static Task<string> GetUUIDAsync(this IGattDescriptor1 o) => o.GetAsync<string>("UUID");
-        public static Task<IGattCharacteristic1> GetCharacteristicAsync(this IGattDescriptor1 o) => o.GetAsync<IGattCharacteristic1>("Characteristic");
-        public static Task<byte[]> GetValueAsync(this IGattDescriptor1 o) => o.GetAsync<byte[]>("Value");
+        public static Task<string> GetUUIDAsync(this IGattDescriptor1 o)
+        {
+            return o.GetAsync<string>("UUID");
+        }
+
+        public static Task<IGattCharacteristic1> GetCharacteristicAsync(this IGattDescriptor1 o)
+        {
+            return o.GetAsync<IGattCharacteristic1>("Characteristic");
+        }
+
+        public static Task<byte[]> GetValueAsync(this IGattDescriptor1 o)
+        {
+            return o.GetAsync<byte[]>("Value");
+        }
     }
 
     [DBusInterface("org.bluez.MediaControl1")]
@@ -992,38 +620,21 @@ namespace ProrepubliQ.DotNetBlueZ
     [Dictionary]
     public class MediaControl1Properties
     {
-        private bool _Connected = default (bool);
-        public bool Connected
-        {
-            get
-            {
-                return _Connected;
-            }
+        public bool Connected { get; set; } = default;
 
-            set
-            {
-                _Connected = (value);
-            }
-        }
-
-        private ObjectPath _Player = default (ObjectPath);
-        public ObjectPath Player
-        {
-            get
-            {
-                return _Player;
-            }
-
-            set
-            {
-                _Player = (value);
-            }
-        }
+        public ObjectPath Player { get; set; } = default;
     }
 
     public static class MediaControl1Extensions
     {
-        public static Task<bool> GetConnectedAsync(this IMediaControl1 o) => o.GetAsync<bool>("Connected");
-        public static Task<ObjectPath> GetPlayerAsync(this IMediaControl1 o) => o.GetAsync<ObjectPath>("Player");
+        public static Task<bool> GetConnectedAsync(this IMediaControl1 o)
+        {
+            return o.GetAsync<bool>("Connected");
+        }
+
+        public static Task<ObjectPath> GetPlayerAsync(this IMediaControl1 o)
+        {
+            return o.GetAsync<ObjectPath>("Player");
+        }
     }
 }
