@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Tmds.DBus;
 
-namespace HashtagChris.DotNetBlueZ
+namespace ProrepubliQ.DotNetBlueZ
 {
   public delegate Task GattCharacteristicEventHandlerAsync(GattCharacteristic sender, GattCharacteristicValueEventArgs eventArgs);
 
