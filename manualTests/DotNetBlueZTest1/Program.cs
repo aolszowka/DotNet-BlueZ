@@ -2,8 +2,8 @@
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using HashtagChris.DotNetBlueZ;
-using HashtagChris.DotNetBlueZ.Extensions;
+using ProrepubliQ.DotNetBlueZ;
+using ProrepubliQ.DotNetBlueZ.Extensions;
 
 namespace DotNetBlueZTest1
 {
