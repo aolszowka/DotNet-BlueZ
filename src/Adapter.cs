@@ -69,6 +69,11 @@ namespace ProrepubliQ.DotNetBlueZ
             return m_proxy.WatchPropertiesAsync(handler);
         }
 
+        public Task ConnectDeviceAsync(IDictionary<string, object> Properties)
+        {
+            return m_proxy.ConnectDeviceAsync(Properties);
+        }
+        
         public void Dispose()
         {
             m_interfacesWatcher?.Dispose();

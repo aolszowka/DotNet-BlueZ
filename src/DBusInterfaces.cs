@@ -53,6 +53,8 @@ namespace ProrepubliQ.DotNetBlueZ
         Task<Adapter1Properties> GetAllAsync();
         Task SetAsync(string prop, object val);
         Task<IDisposable> WatchPropertiesAsync(Action<PropertyChanges> handler);
+        Task ConnectDeviceAsync(IDictionary<string, object> Properties);
+
     }
 
     [Dictionary]
