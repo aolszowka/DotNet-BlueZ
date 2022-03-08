@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Tmds.DBus;
 
-namespace ProrepubliQ.DotNetBlueZ.Extensions
+namespace ProrepubliQ.DotNetBlueZ
 {
     public static class Extensions
     {

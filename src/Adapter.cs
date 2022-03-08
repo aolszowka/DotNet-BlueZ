@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using ProrepubliQ.DotNetBlueZ.Extensions;
 using Tmds.DBus;
 
 namespace ProrepubliQ.DotNetBlueZ
@@ -69,6 +68,9 @@ namespace ProrepubliQ.DotNetBlueZ
             return m_proxy.WatchPropertiesAsync(handler);
         }
 
+        /// <summary>
+        /// Requires Bluez 5.49 or later and the bluetooth service has to run with the experimental flag.
+        /// </summary>
         public Task ConnectDeviceAsync(IDictionary<string, object> Properties)
         {
             return m_proxy.ConnectDeviceAsync(Properties);
