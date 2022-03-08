@@ -49,6 +49,19 @@ internal class Program
 
             try
             {
+                Console.WriteLine($"Device has service resolved handler: {device.HasServicesResolvedHandler()}");
+                Console.WriteLine($"Device has connected handler: {device.HasConnectedHandler()}");
+                Console.WriteLine($"Device has disconnected handler: {device.HasDisconnectedHandler()}");
+
+                Console.WriteLine("Adding Event handlers");
+                device.Connected += ConnectedAsync;
+                device.Disconnected += DisconnectedAsync;
+                device.ServicesResolved += ServicesResolvedAsync;
+
+                Console.WriteLine($"Device has service resolved handler: {device.HasServicesResolvedHandler()}");
+                Console.WriteLine($"Device has connected handler: {device.HasConnectedHandler()}");
+                Console.WriteLine($"Device has disconnected handler: {device.HasDisconnectedHandler()}");
+
                 await device.ConnectAsync();
             }
             catch (Exception e)
@@ -66,6 +79,19 @@ internal class Program
 
             Console.WriteLine($"{name} with address: {address} in adapter, connected: {connected}");
         }
+    }
 
+    private static async Task ConnectedAsync(Device device, BlueZEventArgs e)
+    {
+        Console.WriteLine("Device connected");
+    }
+
+    private static async Task DisconnectedAsync(Device device, BlueZEventArgs e)
+    {
+        Console.WriteLine("Device disconnected");
+    }
+    private static async Task ServicesResolvedAsync(Device device, BlueZEventArgs e)
+    {
+        Console.WriteLine("Services resolved");
     }
 }
