@@ -1,5 +1,8 @@
-﻿using ProrepubliQ.DotNetBlueZ;
-using ProrepubliQ.DotNetBlueZ.Extensions;
+﻿using System;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using ProrepubliQ.DotNetBlueZ;
 
 namespace DotNetBlueZTest1
 {
