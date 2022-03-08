@@ -1,0 +1,52 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30114.105
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetBlueZ", "src\DotNetBlueZ.csproj", "{B5DF17B0-93B5-486D-9CA4-7D2659CE16F9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetBlueZTest1", "manualTests\DotNetBlueZTest1\DotNetBlueZTest1.csproj", "{B314B1D4-C9CA-4FF0-A63D-7C7160262CD9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "connectToSpecificDevice", "samples\connectToSpecificDevice\connectToSpecificDevice.csproj", "{1DB671A4-B1A6-4E7D-8D9C-3CF701443767}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "printDeviceInfo", "samples\printDeviceInfo\printDeviceInfo.csproj", "{3CCB39AE-3622-4E2F-9D9B-9B355B2F1E74}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "scan", "samples\scan\scan.csproj", "{4D2AD772-2009-4478-B506-00E881782A7B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "subscribeToCharacteristic", "samples\subscribeToCharacteristic\subscribeToCharacteristic.csproj", "{11920F6B-F591-4964-A905-1446C88F1BB3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B5DF17B0-93B5-486D-9CA4-7D2659CE16F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B5DF17B0-93B5-486D-9CA4-7D2659CE16F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B5DF17B0-93B5-486D-9CA4-7D2659CE16F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B5DF17B0-93B5-486D-9CA4-7D2659CE16F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B314B1D4-C9CA-4FF0-A63D-7C7160262CD9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B314B1D4-C9CA-4FF0-A63D-7C7160262CD9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B314B1D4-C9CA-4FF0-A63D-7C7160262CD9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B314B1D4-C9CA-4FF0-A63D-7C7160262CD9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1DB671A4-B1A6-4E7D-8D9C-3CF701443767}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1DB671A4-B1A6-4E7D-8D9C-3CF701443767}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1DB671A4-B1A6-4E7D-8D9C-3CF701443767}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1DB671A4-B1A6-4E7D-8D9C-3CF701443767}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3CCB39AE-3622-4E2F-9D9B-9B355B2F1E74}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3CCB39AE-3622-4E2F-9D9B-9B355B2F1E74}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3CCB39AE-3622-4E2F-9D9B-9B355B2F1E74}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3CCB39AE-3622-4E2F-9D9B-9B355B2F1E74}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4D2AD772-2009-4478-B506-00E881782A7B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4D2AD772-2009-4478-B506-00E881782A7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4D2AD772-2009-4478-B506-00E881782A7B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4D2AD772-2009-4478-B506-00E881782A7B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11920F6B-F591-4964-A905-1446C88F1BB3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11920F6B-F591-4964-A905-1446C88F1BB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11920F6B-F591-4964-A905-1446C88F1BB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11920F6B-F591-4964-A905-1446C88F1BB3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
