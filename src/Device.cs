@@ -101,7 +101,15 @@ namespace ProrepubliQ.DotNetBlueZ
             remove => m_connected -= value;
         }
 
-        public event DeviceEventHandlerAsync Disconnected;
+        public event DeviceEventHandlerAsync Disconnected
+        {
+            add
+            {
+                m_disconnected += value;
+                FireEventIfPropertyAlreadyTrueAsync(m_resolved, "Connected");
+            }
+            remove => m_disconnected -= value;
+        }
 
         public event DeviceEventHandlerAsync ServicesResolved
         {
@@ -111,6 +119,36 @@ namespace ProrepubliQ.DotNetBlueZ
                 FireEventIfPropertyAlreadyTrueAsync(m_resolved, "ServicesResolved");
             }
             remove => m_resolved -= value;
+        }
+
+        public bool HasServicesResolvedHandler()
+        {
+            if (m_resolved == null)
+            {
+                return false;
+            }
+
+            return m_resolved.GetInvocationList().Length != 0;
+        }
+
+        public bool HasConnectedHandler()
+        {
+            if (m_connected == null)
+            {
+                return false;
+            }
+
+            return m_connected.GetInvocationList().Length != 0;
+        }
+
+        public bool HasDisconnectedHandler()
+        {
+            if (m_disconnected == null)
+            {
+                return false;
+            }
+
+            return m_disconnected.GetInvocationList().Length != 0;
         }
 
         private async void FireEventIfPropertyAlreadyTrueAsync(DeviceEventHandlerAsync handler, string prop)
@@ -137,7 +175,7 @@ namespace ProrepubliQ.DotNetBlueZ
                         if (true.Equals(pair.Value))
                             m_connected?.Invoke(this, new BlueZEventArgs());
                         else
-                            Disconnected?.Invoke(this, new BlueZEventArgs());
+                            m_disconnected?.Invoke(this, new BlueZEventArgs());
                         break;
 
                     case "ServicesResolved":
@@ -146,6 +184,7 @@ namespace ProrepubliQ.DotNetBlueZ
                 }
         }
 
+        private event DeviceEventHandlerAsync m_disconnected;
         private event DeviceEventHandlerAsync m_connected;
         private event DeviceEventHandlerAsync m_resolved;
     }

@@ -4,8 +4,11 @@
 // Use the `bluetoothctl` command-line tool or the Bluetooth Manager GUI to scan for devices and possibly pair.
 // Then you can use this program to connect and print "Device Information" GATT service values.
 
+using System;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using ProrepubliQ.DotNetBlueZ;
-using ProrepubliQ.DotNetBlueZ.Extensions;
 
 internal class Program
 {

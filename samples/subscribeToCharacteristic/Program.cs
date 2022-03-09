@@ -1,5 +1,8 @@
-﻿using ProrepubliQ.DotNetBlueZ;
-using ProrepubliQ.DotNetBlueZ.Extensions;
+﻿using System;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using ProrepubliQ.DotNetBlueZ;
 
 // An event-driven example that subscribes to one GATT characteristic and prints the value on updates.
 namespace subscribeToCharacteristic
