@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Tmds.DBus;
 
@@ -14,6 +16,8 @@ namespace ProrepubliQ.DotNetBlueZ
         private IDisposable m_propertyWatcher;
 
         private IDevice1 m_proxy;
+
+        private static readonly IDictionary<string, Device> DeviceCache = new ConcurrentDictionary<string, Device>();
 
         public ObjectPath ObjectPath => m_proxy.ObjectPath;
 
@@ -72,6 +76,12 @@ namespace ProrepubliQ.DotNetBlueZ
             m_propertyWatcher?.Dispose();
             m_propertyWatcher = null;
 
+            string devicePath = m_proxy.ObjectPath.ToString();
+            if (DeviceCache.ContainsKey(devicePath))
+            {
+                DeviceCache.Remove(devicePath);
+            }
+
             GC.SuppressFinalize(this);
         }
 
@@ -82,11 +92,19 @@ namespace ProrepubliQ.DotNetBlueZ
 
         internal static async Task<Device> CreateAsync(IDevice1 proxy)
         {
+            string devicePath = proxy.ObjectPath.ToString();
+            if (DeviceCache.ContainsKey(devicePath))
+            {
+                return DeviceCache[devicePath];
+            }
+
             var device = new Device
             {
                 m_proxy = proxy
             };
             device.m_propertyWatcher = await proxy.WatchPropertiesAsync(device.OnPropertyChanges);
+
+            DeviceCache.Add(devicePath, device);
 
             return device;
         }
