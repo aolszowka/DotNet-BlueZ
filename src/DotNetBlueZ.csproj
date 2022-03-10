@@ -19,8 +19,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Tmds.DBus" Version="0.7.0"/>
-        <DotNetCliToolReference Include="Tmds.DBus.Tool" Version="0.7.0"/>
+        <PackageReference Include="Tmds.DBus" Version="0.10.1" />
+        <DotNetCliToolReference Include="Tmds.DBus.Tool" Version="0.7.0" />
     </ItemGroup>
 
 </Project>
