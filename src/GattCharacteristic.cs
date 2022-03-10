@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Tmds.DBus;
 
@@ -16,6 +18,9 @@ namespace ProrepubliQ.DotNetBlueZ
         private IDisposable m_propertyWatcher;
 
         private IGattCharacteristic1 m_proxy;
+
+        private static readonly IDictionary<ObjectPath, GattCharacteristic> CharacteristicCache =
+            new ConcurrentDictionary<ObjectPath, GattCharacteristic>();
 
         public void Dispose()
         {
@@ -84,6 +89,11 @@ namespace ProrepubliQ.DotNetBlueZ
 
         internal static async Task<GattCharacteristic> CreateAsync(IGattCharacteristic1 proxy)
         {
+            if (CharacteristicCache.ContainsKey(proxy.ObjectPath))
+            {
+                return CharacteristicCache[proxy.ObjectPath];
+            }
+
             var characteristic = new GattCharacteristic
             {
                 m_proxy = proxy
@@ -91,7 +101,21 @@ namespace ProrepubliQ.DotNetBlueZ
 
             characteristic.m_propertyWatcher = await proxy.WatchPropertiesAsync(characteristic.OnPropertyChanges);
 
+            CharacteristicCache.Add(proxy.ObjectPath, characteristic);
             return characteristic;
+        }
+
+        internal static void RemoveCharacteristicsFromCache(ObjectPath devicePath)
+        {
+            var entries = CharacteristicCache.Where(c => c.Key.ToString().Contains(devicePath.ToString()));
+
+            foreach (var entry in entries)
+            {
+                var characteristic = entry.Value;
+                characteristic.m_value = null;
+                CharacteristicCache.Remove(entry.Key);
+                characteristic.Dispose();
+            }
         }
 
         public event GattCharacteristicEventHandlerAsync Value
@@ -101,7 +125,7 @@ namespace ProrepubliQ.DotNetBlueZ
                 m_value += value;
 
                 // Subscribe here instead of CreateAsync, because not all GATT characteristics are notifable.
-                Subscribe();
+                // Subscribe();
             }
             remove => m_value -= value;
         }
@@ -113,7 +137,7 @@ namespace ProrepubliQ.DotNetBlueZ
                 await m_proxy.StartNotifyAsync();
 
                 // Is there a way to check if a characteristic supports Read?
-                // // Reading the current value will trigger OnPropertyChanges.
+                // Reading the current value will trigger OnPropertyChanges.
                 // var options = new Dictionary<string, object>();
                 // var value = await m_proxy.ReadValueAsync(options);
             }
@@ -125,7 +149,8 @@ namespace ProrepubliQ.DotNetBlueZ
 
         private void OnPropertyChanges(PropertyChanges changes)
         {
-            // Console.WriteLine("OnPropertyChanges called.");
+            Console.WriteLine("OnPropertyChanges called.");
+            var test = m_value;
             foreach (var pair in changes.Changed)
                 switch (pair.Key)
                 {

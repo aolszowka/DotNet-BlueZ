@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "subscribeToCharacteristic",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReturnSameDeviceIfNotDisposedYet", "manualTests\ReturnSameDeviceIfNotDisposedYet\ReturnSameDeviceIfNotDisposedYet.csproj", "{54DC9220-A08C-47AC-AD17-B7643A5383EC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReturnSameCharacteristicForDeviceService", "manualTests\ReturnSameCharacteristicForDeviceService\ReturnSameCharacteristicForDeviceService.csproj", "{06378285-B0A3-44F6-9216-4868F2587BE4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -54,5 +56,9 @@ Global
 		{54DC9220-A08C-47AC-AD17-B7643A5383EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{54DC9220-A08C-47AC-AD17-B7643A5383EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{54DC9220-A08C-47AC-AD17-B7643A5383EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{06378285-B0A3-44F6-9216-4868F2587BE4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{06378285-B0A3-44F6-9216-4868F2587BE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{06378285-B0A3-44F6-9216-4868F2587BE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{06378285-B0A3-44F6-9216-4868F2587BE4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
