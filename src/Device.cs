@@ -17,7 +17,7 @@ namespace ProrepubliQ.DotNetBlueZ
 
         private IDevice1 m_proxy;
 
-        private static readonly IDictionary<string, Device> DeviceCache = new ConcurrentDictionary<string, Device>();
+        private static readonly IDictionary<ObjectPath, Device> DeviceCache = new ConcurrentDictionary<ObjectPath, Device>();
 
         public ObjectPath ObjectPath => m_proxy.ObjectPath;
 
@@ -76,10 +76,11 @@ namespace ProrepubliQ.DotNetBlueZ
             m_propertyWatcher?.Dispose();
             m_propertyWatcher = null;
 
-            string devicePath = m_proxy.ObjectPath.ToString();
-            if (DeviceCache.ContainsKey(devicePath))
+            GattCharacteristic.RemoveCharacteristicsFromCache(m_proxy.ObjectPath);
+
+            if (DeviceCache.ContainsKey(m_proxy.ObjectPath))
             {
-                DeviceCache.Remove(devicePath);
+                DeviceCache.Remove(m_proxy.ObjectPath);
             }
 
             GC.SuppressFinalize(this);
@@ -92,7 +93,7 @@ namespace ProrepubliQ.DotNetBlueZ
 
         internal static async Task<Device> CreateAsync(IDevice1 proxy)
         {
-            string devicePath = proxy.ObjectPath.ToString();
+            ObjectPath devicePath = proxy.ObjectPath;
             if (DeviceCache.ContainsKey(devicePath))
             {
                 return DeviceCache[devicePath];

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -51,16 +52,32 @@ namespace ProrepubliQ.DotNetBlueZ
             return objectManager.WatchInterfacesAddedAsync(OnDeviceAdded);
         }
 
+
+        private static readonly IDictionary<string, IGattService1> ServiceCache =
+            new ConcurrentDictionary<string, IGattService1>();
         public static async Task<IGattService1> GetServiceAsync(this IDevice1 device, string serviceUUID)
         {
             var services =
                 await BlueZManager.GetProxiesAsync<IGattService1>(BluezConstants.GattServiceInterface, device);
 
+            var devicePath = device.ObjectPath.ToString();
+
             foreach (var service in services)
             {
                 var uuid = await service.GetUUIDAsync();
-                // Console.WriteLine($"Checking {uuid}");
-                if (string.Equals(uuid, serviceUUID, StringComparison.OrdinalIgnoreCase)) return service;
+
+                var serviceKey = devicePath + uuid;
+
+                if (ServiceCache.ContainsKey(serviceKey))
+                {
+                    return ServiceCache[serviceKey];
+                }
+
+                if (string.Equals(uuid, serviceUUID, StringComparison.OrdinalIgnoreCase))
+                {
+                    ServiceCache.Add(serviceKey, service);
+                    return service;
+                }
             }
 
             return null;
@@ -81,7 +98,6 @@ namespace ProrepubliQ.DotNetBlueZ
             foreach (var characteristic in characteristics)
             {
                 var uuid = await characteristic.GetUUIDAsync();
-                // Console.WriteLine($"Checking {uuid}");
                 if (string.Equals(uuid, characteristicUUID, StringComparison.OrdinalIgnoreCase))
                 {
                     var ch = await GattCharacteristic.CreateAsync(characteristic);
