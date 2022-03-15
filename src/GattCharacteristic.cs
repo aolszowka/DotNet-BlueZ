@@ -125,7 +125,7 @@ namespace ProrepubliQ.DotNetBlueZ
                 m_value += value;
 
                 // Subscribe here instead of CreateAsync, because not all GATT characteristics are notifable.
-                // Subscribe();
+                Subscribe();
             }
             remove => m_value -= value;
         }
@@ -149,7 +149,7 @@ namespace ProrepubliQ.DotNetBlueZ
 
         private void OnPropertyChanges(PropertyChanges changes)
         {
-            Console.WriteLine("OnPropertyChanges called.");
+            // Console.WriteLine("OnPropertyChanges called.");
             var test = m_value;
             foreach (var pair in changes.Changed)
                 switch (pair.Key)
