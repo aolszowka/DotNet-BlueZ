@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Tmds.DBus;
 
 namespace ProrepubliQ.DotNetBlueZ
 {
-        public static class BlueZManager
+    public static class BlueZManager
     {
         //Persistent instance of the object manager, creating the manager consumes resources
         private static IObjectManager _objectManager;
@@ -15,7 +16,7 @@ namespace ProrepubliQ.DotNetBlueZ
         private static IDictionary<ObjectPath, IDictionary<string, IDictionary<string, object>>> _proxyCache;
 
         //Locker for accessing cached proxy data
-        private static readonly object ProxyCacheLocker = new object();
+        private static readonly SemaphoreSlim ProxyCacheLocker = new SemaphoreSlim(1);
 
         public static async Task<Adapter> GetAdapterAsync(string adapterName)
         {
@@ -73,20 +74,41 @@ namespace ProrepubliQ.DotNetBlueZ
         /// <param name="rootObject">The DBus object to search under. Can be null</param>
         internal static async Task<IReadOnlyList<T>> GetProxiesAsync<T>(string interfaceName, IDBusObject rootObject)
         {
-            if (_proxyCache == null)
+            //Upon first run do make sure the proxy is set in the initial cache
+            try
             {
-                _proxyCache = await RebuildProxyCache();
+                await ProxyCacheLocker.WaitAsync();
+                // TODO: Find a better way of doing this 
+                if (_proxyCache == null)
+                    _proxyCache = await RebuildProxyCache();
+            }
+            finally
+            {
+                ProxyCacheLocker.Release();
             }
 
-            var matchingObjectPaths = _proxyCache
-                .Where(obj => IsMatch(interfaceName, obj.Key, obj.Value, rootObject))
-                .Select(obj => obj.Key).ToList();
-                
+            if (_proxyCache == null)
+                return Array.Empty<T>();
+
+            List<T> proxies;
+
+            try
+            {
+                await ProxyCacheLocker.WaitAsync();
+                var matchingObjectPaths = _proxyCache
+                    .Where(obj => IsMatch(interfaceName, obj.Key, obj.Value, rootObject))
+                    .Select(obj => obj.Key).ToList();
+
                 // Consume the object from the proxycache
-            var proxies = matchingObjectPaths
+                proxies = matchingObjectPaths
                 .Select(objectPath => Connection.System.CreateProxy<T>(BluezConstants.DbusService, objectPath))
                 .ToList();
-            
+            }
+            finally
+            {
+                ProxyCacheLocker.Release();
+            }
+
             return proxies;
         }
 
@@ -109,35 +131,29 @@ namespace ProrepubliQ.DotNetBlueZ
         private static void AddInstanceToProxyCache(
             (ObjectPath @object, IDictionary<string, IDictionary<string, object>> interfaces) obj)
         {
-            lock (ProxyCacheLocker)
+            if (!_proxyCache.ContainsKey(obj.@object))
             {
-                if (!_proxyCache.ContainsKey(obj.@object))
-                {
-                    _proxyCache.Add(obj.@object, obj.interfaces);
-                }
+                _proxyCache.Add(obj.@object, obj.interfaces);
             }
         }
 
         private static void DropInstanceFromProxyCache((ObjectPath @object, string[] interfaces) obj)
         {
-            lock (ProxyCacheLocker)
-            {
-                if (!_proxyCache.ContainsKey(obj.@object)) return;
-                
-                //Remove all the indicated interfaces from the cache
-                foreach (var i in obj.interfaces)
-                {
-                    if (_proxyCache[obj.@object].ContainsKey(i))
-                    {
-                        _proxyCache[obj.@object].Remove(i);
-                    }
-                }
+            if (!_proxyCache.ContainsKey(obj.@object)) return;
 
-                //If there are no objects left in the cached element remove the element alltogether
-                if (_proxyCache[obj.@object].Count == 0)
+            //Remove all the indicated interfaces from the cache
+            foreach (var i in obj.interfaces)
+            {
+                if (_proxyCache[obj.@object].ContainsKey(i))
                 {
-                    _proxyCache.Remove(obj.@object);
+                    _proxyCache[obj.@object].Remove(i);
                 }
+            }
+
+            //If there are no objects left in the cached element remove the element alltogether
+            if (_proxyCache[obj.@object].Count == 0)
+            {
+                _proxyCache.Remove(obj.@object);
             }
         }
 
