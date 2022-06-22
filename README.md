@@ -8,13 +8,32 @@ Uses [Tmds.DBus](https://github.com/tmds/Tmds.DBus) to access D-Bus. Tmds.DBus.T
 # Requirements
 
 * Linux
-* A recent release of BlueZ. This package was tested with BlueZ 5.50. You can check which version you're using with `bluetoothd -v`.
+* A recent release of BlueZ. This package was tested with BlueZ 5.53 with the `-E` flag. You can check which version you're using with `bluetoothd -v`.
 
 # Installation
 
 ```bash
 dotnet add package ProrepubliQ.DotNetBlueZ
 ```
+
+# Enabling Experimental features
+
+To use all the features of this library you'll have to enable experimental features.
+
+## Ubuntu
+run `systemctl status bluetooth` this will give in information about the bluetooth process.
+
+there should be a line saying something like this:
+
+Loaded: loaded (/lib/systemd/system/bluetooth.service; enabled; vendor preset: enabled)
+
+The `/lib/systemd/system/bluetooth.service` is the path to your service file, we will have to edit this.
+
+Run `sudo vim /lib/systemd/system/bluetooth.service`
+
+Add `-E` at the end of the `ExecStart` line.
+
+Now reboot and it should be enabled
 
 # Events
 
