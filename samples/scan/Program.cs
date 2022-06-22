@@ -11,13 +11,13 @@ namespace Scan
 
         private static async Task Main(string[] args)
         {
-            if (args.Length < 1 || args.Length > 2 || args[0].ToLowerInvariant() == "-h" ||
-                !int.TryParse(args[0], out int scanSeconds))
-            {
-                Console.WriteLine("Usage: scan <SecondsToScan> [adapterName]");
-                Console.WriteLine("Example: scan 15 hci0");
-                return;
-            }
+            // if (args.Length < 1 || args.Length > 2 || args[0].ToLowerInvariant() == "-h" ||
+            //     !int.TryParse(args[0], out int scanSeconds))
+            // {
+            //     Console.WriteLine("Usage: scan <SecondsToScan> [adapterName]");
+            //     Console.WriteLine("Example: scan 15 hci0");
+            //     return;
+            // }
 
             IAdapter1 adapter;
             if (args.Length > 1)
@@ -49,7 +49,7 @@ namespace Scan
             Console.WriteLine();
 
             // Scan for more devices.
-            Console.WriteLine($"Scanning for {scanSeconds} seconds...");
+            Console.WriteLine($"Scanning for {(int)timeout.TotalSeconds} seconds...");
 
             int newDevices = 0;
             using (await adapter.WatchDevicesAddedAsync(async device =>
@@ -61,8 +61,7 @@ namespace Scan
             }))
             {
                 await adapter.StartDiscoveryAsync();
-                await Task.Delay(TimeSpan.FromSeconds(scanSeconds));
-                await adapter.StopDiscoveryAsync();
+                await Task.Delay(TimeSpan.FromSeconds((int)timeout.TotalSeconds));
             }
 
             Console.WriteLine($"Scan complete. {newDevices} new device(s) found.");
@@ -70,8 +69,9 @@ namespace Scan
 
         private static async Task<string> GetDeviceDescriptionAsync(IDevice1 device)
         {
-            var deviceProperties = await device.GetAllAsync();
-            return $"{deviceProperties.Alias} (Address: {deviceProperties.Address}, RSSI: {deviceProperties.RSSI})";
+            var address = await device.GetAddressAsync();
+            var alias = await device.GetAliasAsync();
+            return $"{alias} (Address: {address})";
         }
     }
 }
