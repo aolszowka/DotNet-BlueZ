@@ -51,58 +51,7 @@ internal class Program
             Console.WriteLine(e.Message);
         }
 
-
-        Console.WriteLine($"Disconnecting from device {DeviceToConnectTo}");
-
-        try
-        {
-            await device1.DisconnectAsync();
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine($"Failed to disconnect device {DeviceToConnectTo}");
-        }
-
-        try
-        {
-            await adapter.ConnectDeviceAsync(dict);
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e.Message);
-        }
-
-        var device2 = await adapter.GetDeviceAsync(DeviceToConnectTo);
-
-        try
-        {
-            if (!device2.HasConnectedHandler())
-            {
-                device2.Connected += ConnectedAsync;
-            }
-
-            if (!device2.HasDisconnectedHandler())
-            {
-                device2.Disconnected += DisconnectedAsync;
-            }
-
-            if (!device2.HasServicesResolvedHandler())
-            {
-                device2.ServicesResolved += ServicesResolvedAsync;
-            }
-
-            await device2.ConnectAsync();
-            Console.WriteLine($"Connected to device {DeviceToConnectTo}");
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e.Message);
-        }
-
-        var devicesAreSameInstance = device1.Equals(device2);
-
-        Console.WriteLine($"Are devices the same instance? {devicesAreSameInstance}");
-
+        
         await Task.Delay(10000);
     }
 
@@ -119,5 +68,11 @@ internal class Program
     private static async Task ServicesResolvedAsync(Device device, BlueZEventArgs e)
     {
         Console.WriteLine("Services resolved");
+        
+        var battery = await device.GetBatteryAsync();
+        var percentage = await battery.GetPercentageAsync();
+        
+        
+        Console.WriteLine($"Battery percentage: {percentage}");
     }
 }
