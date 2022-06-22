@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using Tmds.DBus;
 
@@ -13,6 +14,8 @@ namespace ProrepubliQ.DotNetBlueZ
     /// </summary>
     public class Device : IDevice1, IDisposable
     {
+        private static readonly SemaphoreSlim Locker = new SemaphoreSlim(1);
+        
         private IDisposable m_propertyWatcher;
 
         private IDevice1 m_proxy;
@@ -93,21 +96,30 @@ namespace ProrepubliQ.DotNetBlueZ
 
         internal static async Task<Device> CreateAsync(IDevice1 proxy)
         {
-            ObjectPath devicePath = proxy.ObjectPath;
-            if (DeviceCache.ContainsKey(devicePath))
+            await Locker.WaitAsync();
+            try
             {
-                return DeviceCache[devicePath];
+                ObjectPath devicePath = proxy.ObjectPath;
+                if (DeviceCache.ContainsKey(devicePath))
+                {
+                    return DeviceCache[devicePath];
+                }
+
+                var device = new Device
+                {
+                    m_proxy = proxy
+                };
+                device.m_propertyWatcher = await proxy.WatchPropertiesAsync(device.OnPropertyChanges);
+
+                DeviceCache.Add(devicePath, device);
+
+                return device;
             }
-
-            var device = new Device
+            finally
             {
-                m_proxy = proxy
-            };
-            device.m_propertyWatcher = await proxy.WatchPropertiesAsync(device.OnPropertyChanges);
-
-            DeviceCache.Add(devicePath, device);
-
-            return device;
+                Locker.Release();
+            }
+            
         }
 
         public event DeviceEventHandlerAsync Connected
