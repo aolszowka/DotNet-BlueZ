@@ -1,33 +1,34 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30114.105
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33103.201
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetBlueZ", "src\DotNetBlueZ.csproj", "{B5DF17B0-93B5-486D-9CA4-7D2659CE16F9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotNetBlueZ", "src\DotNetBlueZ.csproj", "{B5DF17B0-93B5-486D-9CA4-7D2659CE16F9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetBlueZTest1", "manualTests\DotNetBlueZTest1\DotNetBlueZTest1.csproj", "{B314B1D4-C9CA-4FF0-A63D-7C7160262CD9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotNetBlueZTest1", "manualTests\DotNetBlueZTest1\DotNetBlueZTest1.csproj", "{B314B1D4-C9CA-4FF0-A63D-7C7160262CD9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "connectToSpecificDevice", "samples\connectToSpecificDevice\connectToSpecificDevice.csproj", "{1DB671A4-B1A6-4E7D-8D9C-3CF701443767}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "connectToSpecificDevice", "samples\connectToSpecificDevice\connectToSpecificDevice.csproj", "{1DB671A4-B1A6-4E7D-8D9C-3CF701443767}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "printDeviceInfo", "samples\printDeviceInfo\printDeviceInfo.csproj", "{3CCB39AE-3622-4E2F-9D9B-9B355B2F1E74}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "printDeviceInfo", "samples\printDeviceInfo\printDeviceInfo.csproj", "{3CCB39AE-3622-4E2F-9D9B-9B355B2F1E74}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "scan", "samples\scan\scan.csproj", "{4D2AD772-2009-4478-B506-00E881782A7B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "scan", "samples\scan\scan.csproj", "{4D2AD772-2009-4478-B506-00E881782A7B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "subscribeToCharacteristic", "samples\subscribeToCharacteristic\subscribeToCharacteristic.csproj", "{11920F6B-F591-4964-A905-1446C88F1BB3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "subscribeToCharacteristic", "samples\subscribeToCharacteristic\subscribeToCharacteristic.csproj", "{11920F6B-F591-4964-A905-1446C88F1BB3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReturnSameDeviceIfNotDisposedYet", "manualTests\ReturnSameDeviceIfNotDisposedYet\ReturnSameDeviceIfNotDisposedYet.csproj", "{54DC9220-A08C-47AC-AD17-B7643A5383EC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReturnSameDeviceIfNotDisposedYet", "manualTests\ReturnSameDeviceIfNotDisposedYet\ReturnSameDeviceIfNotDisposedYet.csproj", "{54DC9220-A08C-47AC-AD17-B7643A5383EC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReturnSameCharacteristicForDeviceService", "manualTests\ReturnSameCharacteristicForDeviceService\ReturnSameCharacteristicForDeviceService.csproj", "{06378285-B0A3-44F6-9216-4868F2587BE4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReturnSameCharacteristicForDeviceService", "manualTests\ReturnSameCharacteristicForDeviceService\ReturnSameCharacteristicForDeviceService.csproj", "{06378285-B0A3-44F6-9216-4868F2587BE4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BatteryInterfaceTest", "manualTests\BatteryInterfaceTest\BatteryInterfaceTest.csproj", "{19CE878C-62F8-493C-A753-F7ECEBCA54E4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BatteryInterfaceTest", "manualTests\BatteryInterfaceTest\BatteryInterfaceTest.csproj", "{19CE878C-62F8-493C-A753-F7ECEBCA54E4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{67335846-B041-45C5-A45E-D2C2217067A9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "manualTests", "manualTests", "{011E8B84-D651-4E63-AEF8-292D92D4C3A9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{B5DF17B0-93B5-486D-9CA4-7D2659CE16F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -66,5 +67,18 @@ Global
 		{19CE878C-62F8-493C-A753-F7ECEBCA54E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{19CE878C-62F8-493C-A753-F7ECEBCA54E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{19CE878C-62F8-493C-A753-F7ECEBCA54E4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B314B1D4-C9CA-4FF0-A63D-7C7160262CD9} = {011E8B84-D651-4E63-AEF8-292D92D4C3A9}
+		{1DB671A4-B1A6-4E7D-8D9C-3CF701443767} = {67335846-B041-45C5-A45E-D2C2217067A9}
+		{3CCB39AE-3622-4E2F-9D9B-9B355B2F1E74} = {67335846-B041-45C5-A45E-D2C2217067A9}
+		{4D2AD772-2009-4478-B506-00E881782A7B} = {67335846-B041-45C5-A45E-D2C2217067A9}
+		{11920F6B-F591-4964-A905-1446C88F1BB3} = {67335846-B041-45C5-A45E-D2C2217067A9}
+		{54DC9220-A08C-47AC-AD17-B7643A5383EC} = {011E8B84-D651-4E63-AEF8-292D92D4C3A9}
+		{06378285-B0A3-44F6-9216-4868F2587BE4} = {011E8B84-D651-4E63-AEF8-292D92D4C3A9}
+		{19CE878C-62F8-493C-A753-F7ECEBCA54E4} = {011E8B84-D651-4E63-AEF8-292D92D4C3A9}
 	EndGlobalSection
 EndGlobal
