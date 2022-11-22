@@ -1,14 +1,15 @@
 # DotNet-BlueZ
+
 A quick and dirty library for BlueZ's D-Bus APIs. Primary focus is Bluetooth Low Energy.
 
 [![DotNetBlueZ NuGet Badge](https://buildstats.info/nuget/ProrepubliQ.DotNetBlueZ?dWidth=70&includePreReleases=true)](https://www.nuget.org/packages/ProrepubliQ.DotNetBlueZ/)
 
-Uses [Tmds.DBus](https://github.com/tmds/Tmds.DBus) to access D-Bus. Tmds.DBus.Tool was used to generate the D-Bus object interfaces. D-Bus is the preferred interface for Bluetooth in userspace. The [Doing Bluetooth Low Energy on Linux](https://elinux.org/images/3/32/Doing_Bluetooth_Low_Energy_on_Linux.pdf) presentation says "Use D-Bus API (documentation in [doc/]((https://git.kernel.org/pub/scm/bluetooth/bluez.git/tree/doc))) whenever possible".
+Uses [Tmds.DBus](https://github.com/tmds/Tmds.DBus) to access D-Bus. Tmds.DBus.Tool was used to generate the D-Bus object interfaces. D-Bus is the preferred interface for Bluetooth in userspace. The [Doing Bluetooth Low Energy on Linux](https://elinux.org/images/3/32/Doing_Bluetooth_Low_Energy_on_Linux.pdf) presentation says "Use D-Bus API (documentation in [doc/](<(https://git.kernel.org/pub/scm/bluetooth/bluez.git/tree/doc)>)) whenever possible".
 
 # Requirements
 
-* Linux
-* A recent release of BlueZ. This package was tested with BlueZ 5.53 with the `-E` flag. You can check which version you're using with `bluetoothd -v`.
+- Linux
+- A recent release of BlueZ. This package was tested with BlueZ 5.53 with the `-E` flag. You can check which version you're using with `bluetoothd -v`.
 
 # Installation
 
@@ -21,6 +22,7 @@ dotnet add package ProrepubliQ.DotNetBlueZ
 To use all the features of this library you'll have to enable experimental features.
 
 ## Ubuntu
+
 run `systemctl status bluetooth` this will give in information about the bluetooth process.
 
 there should be a line saying something like this:
@@ -144,7 +146,23 @@ private static async Task characteristic_Value(GattCharacteristic characteristic
 It may be necessary to pair with a device for a GATT service to be visible or for reading GATT characteristics to work. To pair, one option is to run `bluetoothctl` (or `sudo bluetoothctl`)
 and then run `default agent` and `agent on` within `bluetoothctl`. Watch `bluetoothctl` for pairing requests.
 
-See [Ubuntu's Introduction to Pairing](https://core.docs.ubuntu.com/en/stacks/bluetooth/bluez/docs/reference/pairing/introduction).
+Running the following code with an unpaired device
+
+```csharp
+var dict = new Dictionary<string, object>();
+dict.Add("Address", DeviceToConnectTo);
+dict.Add("AddressType", "random");
+
+await adapter.ConnectDeviceAsync(dict);
+```
+
+might result in the following error:
+
+> org.freedesktop.DBus.Error.UnknownMethod: Method "ConnectDevice" with signature "a{sv}" on interface "org.bluez.Adapter1" doesn't exist
+
+Connecting directly to a device that was obtained by discovery might succeed without pairing.
+
+See [Ubuntu's Introduction to Pairing](https://ubuntu.com/core/docs/bluez/reference/pairing/introduction).
 
 # Contributing
 
@@ -152,5 +170,5 @@ See [Contributing](./github/CONTRIBUTING.md).
 
 # Reference
 
-* [BlueZ D-Bus API docs](https://git.kernel.org/pub/scm/bluetooth/bluez.git/tree/doc)
-* [Install BlueZ on the Raspberry PI](https://learn.adafruit.com/install-bluez-on-the-raspberry-pi/overview)
+- [BlueZ D-Bus API docs](https://git.kernel.org/pub/scm/bluetooth/bluez.git/tree/doc)
+- [Install BlueZ on the Raspberry PI](https://learn.adafruit.com/install-bluez-on-the-raspberry-pi/overview)
