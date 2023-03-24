@@ -2,7 +2,7 @@
 
 A quick and dirty library for BlueZ's D-Bus APIs. Primary focus is Bluetooth Low Energy.
 
-[![DotNetBlueZ NuGet Badge](https://buildstats.info/nuget/vestervang.DotNetBlueZ?dWidth=70&includePreReleases=true)](https://www.nuget.org/packages/vestervang.DotNetBlueZ/)
+[![.NET Build, Test, and Publish Nuget Package](https://github.com/vestervang/DotNet-BlueZ/actions/workflows/main.yml/badge.svg)](https://github.com/vestervang/DotNet-BlueZ/actions/workflows/main.yml)
 
 Uses [Tmds.DBus](https://github.com/tmds/Tmds.DBus) to access D-Bus. Tmds.DBus.Tool was used to generate the D-Bus object interfaces. D-Bus is the preferred interface for Bluetooth in userspace. The [Doing Bluetooth Low Energy on Linux](https://elinux.org/images/3/32/Doing_Bluetooth_Low_Energy_on_Linux.pdf) presentation says "Use D-Bus API (documentation in [doc/](<(https://git.kernel.org/pub/scm/bluetooth/bluez.git/tree/doc)>)) whenever possible".
 
