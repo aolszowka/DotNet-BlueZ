@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using ProrepubliQ.DotNetBlueZ;
+using vestervang.DotNetBlueZ;
 
 namespace Scan
 {

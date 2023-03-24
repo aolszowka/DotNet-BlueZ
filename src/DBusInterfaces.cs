@@ -11,7 +11,7 @@ using Tmds.DBus;
 
 [assembly: InternalsVisibleTo(Connection.DynamicAssemblyName)]
 
-namespace ProrepubliQ.DotNetBlueZ
+namespace vestervang.DotNetBlueZ
 {
     [DBusInterface("org.freedesktop.DBus.ObjectManager")]
     public interface IObjectManager : IDBusObject

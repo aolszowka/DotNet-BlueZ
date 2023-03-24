@@ -2,18 +2,18 @@
 
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
-        <RootNamespace>ProrepubliQ.DotNetBlueZ</RootNamespace>
+        <RootNamespace>vestervang.DotNetBlueZ</RootNamespace>
     </PropertyGroup>
 
     <!-- NuGet -->
     <PropertyGroup>
-        <PackageId>ProrepubliQ.DotNetBlueZ</PackageId>
+        <PackageId>vestervang.DotNetBlueZ</PackageId>
         <Version>1.6.5</Version>
         <Authors>Chris Sidi, Frederik Thomsen</Authors>
         <Title>Quick and dirty library for BlueZ's D-Bus APIs</Title>
         <Description>A quick and dirty library for BlueZ's D-Bus APIs. Focus is on Bluetooth Low Energy APIs.</Description>
         <PackageTags>BlueZ;net-core;netstandard;Bluetooth;BluetoothLowEnergy;BLE</PackageTags>
-        <RepositoryUrl>https://github.com/ProrepubliQ/DotNet-BlueZ</RepositoryUrl>
+        <RepositoryUrl>https://github.com/vestervang/DotNet-BlueZ</RepositoryUrl>
         <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     </PropertyGroup>

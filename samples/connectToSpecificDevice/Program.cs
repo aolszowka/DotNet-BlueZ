@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ProrepubliQ.DotNetBlueZ;
+using vestervang.DotNetBlueZ;
 
 internal class Program
 {

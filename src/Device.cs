@@ -5,7 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Tmds.DBus;
 
-namespace ProrepubliQ.DotNetBlueZ
+namespace vestervang.DotNetBlueZ
 {
     public delegate Task DeviceEventHandlerAsync(Device sender, BlueZEventArgs eventArgs);
 

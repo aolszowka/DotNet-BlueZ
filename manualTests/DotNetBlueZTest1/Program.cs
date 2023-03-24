@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ProrepubliQ.DotNetBlueZ;
+using vestervang.DotNetBlueZ;
 
 namespace DotNetBlueZTest1
 {
