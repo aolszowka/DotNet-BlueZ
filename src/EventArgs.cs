@@ -1,6 +1,6 @@
 using System;
 
-namespace ProrepubliQ.DotNetBlueZ
+namespace vestervang.DotNetBlueZ
 {
     public class BlueZEventArgs : EventArgs
     {

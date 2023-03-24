@@ -1,4 +1,4 @@
-﻿namespace ProrepubliQ.DotNetBlueZ
+﻿namespace vestervang.DotNetBlueZ
 {
     public static class BluezConstants
     {
