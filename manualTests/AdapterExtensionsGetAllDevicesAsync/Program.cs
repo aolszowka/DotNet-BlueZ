@@ -1,5 +1,4 @@
 ﻿using vestervang.DotNetBlueZ;
-// using HashtagChris.DotNetBlueZ;
 
 namespace DevicePropertiesGetAllAsync
 {
@@ -13,15 +12,21 @@ namespace DevicePropertiesGetAllAsync
                 {
                     if (adapter != null)
                     {
-                        adapter.DeviceFound += adapter_DeviceFoundAsync;
-
                         var props = new Dictionary<string, object>();
                         props.Add("Transport", "le");
                         props.Add("DuplicateData", false);
                         await adapter.SetDiscoveryFilterAsync(props);
                         await adapter.StartDiscoveryAsync();
-                        Console.WriteLine("Waiting for events. Use Control-C to quit.");
-                        await Task.Delay(-1);
+                        Console.WriteLine("Waiting for devices. Use Control-C to quit.");
+                        while (true)
+                        {
+                            var devices = await adapter.GetDevicesAsync();
+                            foreach (var device in devices)
+                            {
+                                var deviceProperties = await device.GetAllAsync();
+                                Console.WriteLine($"{deviceProperties.Name} ({deviceProperties.Address}) was the device.");
+                            }
+                        }
                     }
                     else
                     {
@@ -44,21 +49,6 @@ namespace DevicePropertiesGetAllAsync
             }
         }
 
-        /// <summary>
-        /// Called when a new Device is Found ("Discovered"). This is the
-        /// initial connection made during the discovery phase.
-        /// </summary>
-        /// <param name="sender">
-        /// The Bluetooth Adapter that found the device.
-        /// </param>
-        /// <param name="eventArgs">The DeviceFound Event Arguments</param>
-        /// <returns> Nothing.</returns>
-        private static async Task adapter_DeviceFoundAsync(Adapter sender, DeviceFoundEventArgs eventArgs)
-        {
-            Console.WriteLine("A device was found!");
-            var deviceProperties = await eventArgs.Device.GetAllAsync();
-            Console.WriteLine($"{deviceProperties.Name} ({deviceProperties.Address}) was the device.");
-        }
     }
 }
 
