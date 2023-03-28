@@ -1,6 +1,6 @@
 ﻿using vestervang.DotNetBlueZ;
 
-namespace DevicePropertiesGetAllAsync
+namespace AdapterExtensionsGetAllDevicesAsync
 {
     class Program
     {
