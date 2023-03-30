@@ -3,6 +3,7 @@
     <PropertyGroup>
         <RootNamespace>vestervang.DotNetBlueZ</RootNamespace>
         <TargetFramework>netstandard2.0</TargetFramework>
+        <LangVersion>11</LangVersion>
     </PropertyGroup>
 
     <!-- NuGet -->

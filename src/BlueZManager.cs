@@ -79,8 +79,7 @@ namespace vestervang.DotNetBlueZ
             {
                 await ProxyCacheLocker.WaitAsync();
                 // TODO: Find a better way of doing this 
-                if (_proxyCache == null)
-                    _proxyCache = await RebuildProxyCache();
+                _proxyCache ??= await RebuildProxyCache();
             }
             finally
             {
