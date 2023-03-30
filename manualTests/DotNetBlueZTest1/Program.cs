@@ -1,118 +1,49 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using vestervang.DotNetBlueZ;
 
-namespace DotNetBlueZTest1
+namespace DotNetBlueZTest1;
+
+internal class Program
 {
-    internal class Program
+    private static readonly TimeSpan timeout = TimeSpan.FromSeconds(15);
+
+    private static async Task Main(string[] args)
     {
-        private const string DefaultAdapterName = "hci0";
-        private static readonly TimeSpan timeout = TimeSpan.FromSeconds(15);
+        var scanSeconds = 15;
+        var adapters = await BlueZManager.GetAdaptersAsync();
+        var adapter = adapters.First();
 
-        private static async Task Main(string[] args)
+        if (adapter is null)
         {
-            if (args.Length < 1 || args.Length > 2 || args[0].ToLowerInvariant() == "-h" ||
-                !int.TryParse(args[0], out int scanSeconds))
-            {
-                Console.WriteLine("Usage: DotNetBlueZTest1 <SecondsToScan> [adapterName]");
-                Console.WriteLine("Example: DotNetBlueZTest1 15 hci0");
-                return;
-            }
-
-            var adapterName = args.Length > 1 ? args[1] : DefaultAdapterName;
-            var adapter = await BlueZManager.GetAdapterAsync(adapterName);
-
-            // Scan briefly for devices.
-            Console.WriteLine($"Scanning for {scanSeconds} seconds...");
-
-            using (await adapter.WatchDevicesAddedAsync(async device =>
-            {
-                // Write a message when we detect new devices during the scan.
-                string deviceDescription = await GetDeviceDescriptionAsync(device);
-                Console.WriteLine($"[NEW] {deviceDescription}");
-            }))
-            {
-                await adapter.StartDiscoveryAsync();
-                await Task.Delay(TimeSpan.FromSeconds(scanSeconds));
-                await adapter.StopDiscoveryAsync();
-            }
-
-            var devices = await adapter.GetDevicesAsync();
-            Console.WriteLine($"{devices.Count} device(s) found.");
-
-            foreach (var device in devices) await OnDeviceFoundAsync(device);
+            Console.WriteLine("No bluetooth adapters found");
+            return;
         }
 
-        private static async Task OnDeviceFoundAsync(IDevice1 device)
-        {
-            string deviceDescription = await GetDeviceDescriptionAsync(device);
-            while (true)
-            {
-                Console.WriteLine($"Connect to {deviceDescription}? yes/[no]?");
-                string response = Console.ReadLine();
-                if (response.Length == 0 || response.ToLowerInvariant().StartsWith("n")) return;
+        Console.WriteLine($"Scanning for {scanSeconds} seconds...");
 
-                if (response.ToLowerInvariant().StartsWith("y")) break;
-            }
+        adapter.DeviceFound += DeviceFound;
 
-            try
-            {
-                Console.WriteLine("Connecting...");
-                await device.ConnectAsync();
-                await device.WaitForPropertyValueAsync("Connected", value: true, timeout);
-                Console.WriteLine("Connected.");
+        var props = new Dictionary<string, object>();
+        props.Add("Transport", "le");
+        props.Add("DuplicateData", false);
+        await adapter.SetDiscoveryFilterAsync(props);
 
-                Console.WriteLine("Waiting for services to resolve...");
-                await device.WaitForPropertyValueAsync("ServicesResolved", value: true, timeout);
+        await adapter.StartDiscoveryAsync();
+        await Task.Delay(TimeSpan.FromSeconds(scanSeconds));
+        await adapter.StopDiscoveryAsync();
 
-                var servicesUUIDs = await device.GetUUIDsAsync();
-                Console.WriteLine($"Device offers {servicesUUIDs.Length} service(s).");
+        var devices = await adapter.GetDevicesAsync();
+        Console.WriteLine($"{devices.Count} device(s) found.");
+    }
 
-                var deviceInfoServiceFound =
-                    servicesUUIDs.Any(uuid => uuid == GattConstants.DeviceInformationServiceUUID);
-                if (!deviceInfoServiceFound)
-                {
-                    Console.WriteLine("Device doesn't have the Device Information Service. Try pairing first?");
-                    return;
-                }
+    private static async Task DeviceFound(Adapter sender, DeviceFoundEventArgs eventArgs)
+    {
+        var deviceProperties = await eventArgs.Device.GetAllAsync();
 
-                // Console.WriteLine("Retrieving Device Information service...");
-                var service = await device.GetServiceAsync(GattConstants.DeviceInformationServiceUUID);
-                var modelNameCharacteristic =
-                    await service.GetCharacteristicAsync(GattConstants.ModelNameCharacteristicUUID);
-                var manufacturerCharacteristic =
-                    await service.GetCharacteristicAsync(GattConstants.ManufacturerNameCharacteristicUUID);
-
-                Console.WriteLine("Reading Device Info characteristic values...");
-                var modelNameBytes = await modelNameCharacteristic.ReadValueAsync(timeout);
-                var manufacturerBytes = await manufacturerCharacteristic.ReadValueAsync(timeout);
-
-                Console.WriteLine($"Model name: {Encoding.UTF8.GetString(modelNameBytes)}");
-                Console.WriteLine($"Manufacturer: {Encoding.UTF8.GetString(manufacturerBytes)}");
-
-                // Test walking back up to the adapter...
-                var adapterName =
-                    await (await (await (await modelNameCharacteristic.GetServiceAsync()).GetDeviceAsync())
-                        .GetAdapterAsync()).GetAliasAsync();
-
-                Console.WriteLine($"Adapter name: {adapterName}");
-            }
-            catch (Exception ex)
-            {
-                Console.Error.WriteLine(ex.Message);
-            }
-            finally
-            {
-                Console.WriteLine();
-            }
-        }
-
-        private static async Task<string> GetDeviceDescriptionAsync(IDevice1 device)
-        {
-            var deviceProperties = await device.GetAllAsync();
-            return $"{deviceProperties.Alias} (Address: {deviceProperties.Address}, RSSI: {deviceProperties.RSSI})";
-        }
+        Console.WriteLine(
+            $"[{DateTime.UtcNow}] Found device {deviceProperties.Name} with address {deviceProperties.Address}");
     }
 }
