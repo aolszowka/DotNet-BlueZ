@@ -9,7 +9,7 @@ present).
 This version of the program uses the Event Driven Model off of Adapter.
 
 This application was tested working on 2023/03/29 on a Raspberry Pi 4B running
-Ubuntu 22.04 Jammy Jellyfish..
+Ubuntu 22.04 Jammy Jellyfish.
 
 `uname -a` - `Linux rbpi4b 5.15.0-1025-raspi #27-Ubuntu SMP PREEMPT Thu Feb 16 17:09:55 UTC 2023 aarch64 aarch64 aarch64 GNU/Linux`
 `bluetoothctl -v` - `bluetoothctl: 5.64`
