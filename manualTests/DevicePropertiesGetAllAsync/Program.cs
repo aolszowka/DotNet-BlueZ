@@ -1,7 +1,6 @@
 ﻿// See https://github.com/vestervang/DotNet-BlueZ/issues/8
 
 using vestervang.DotNetBlueZ;
-// using HashtagChris.DotNetBlueZ;
 
 namespace DevicePropertiesGetAllAsync
 {
