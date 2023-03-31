@@ -25,6 +25,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{6733
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "manualTests", "manualTests", "{011E8B84-D651-4E63-AEF8-292D92D4C3A9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdapterExtensionsGetAllDevicesAsync", "manualTests\AdapterExtensionsGetAllDevicesAsync\AdapterExtensionsGetAllDevicesAsync.csproj", "{42E783C0-EB45-4FF5-8711-0F4EA589ABDE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevicePropertiesGetAllAsync", "manualTests\DevicePropertiesGetAllAsync\DevicePropertiesGetAllAsync.csproj", "{D5768652-BE13-4715-BA01-7E774EC17754}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -67,6 +71,14 @@ Global
 		{19CE878C-62F8-493C-A753-F7ECEBCA54E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{19CE878C-62F8-493C-A753-F7ECEBCA54E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{19CE878C-62F8-493C-A753-F7ECEBCA54E4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{42E783C0-EB45-4FF5-8711-0F4EA589ABDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{42E783C0-EB45-4FF5-8711-0F4EA589ABDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{42E783C0-EB45-4FF5-8711-0F4EA589ABDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{42E783C0-EB45-4FF5-8711-0F4EA589ABDE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5768652-BE13-4715-BA01-7E774EC17754}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5768652-BE13-4715-BA01-7E774EC17754}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5768652-BE13-4715-BA01-7E774EC17754}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5768652-BE13-4715-BA01-7E774EC17754}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -80,5 +92,7 @@ Global
 		{54DC9220-A08C-47AC-AD17-B7643A5383EC} = {011E8B84-D651-4E63-AEF8-292D92D4C3A9}
 		{06378285-B0A3-44F6-9216-4868F2587BE4} = {011E8B84-D651-4E63-AEF8-292D92D4C3A9}
 		{19CE878C-62F8-493C-A753-F7ECEBCA54E4} = {011E8B84-D651-4E63-AEF8-292D92D4C3A9}
+		{42E783C0-EB45-4FF5-8711-0F4EA589ABDE} = {011E8B84-D651-4E63-AEF8-292D92D4C3A9}
+		{D5768652-BE13-4715-BA01-7E774EC17754} = {011E8B84-D651-4E63-AEF8-292D92D4C3A9}
 	EndGlobalSection
 EndGlobal
